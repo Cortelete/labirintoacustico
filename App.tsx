@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 
 // Import constants and types
@@ -337,33 +336,33 @@ const App: React.FC = () => {
                   <LinkButton icon={<MegaphoneIcon />} text="Anunciar no Labirinto" onClick={() => openModal('advertise')} />
                   <LinkButton icon={<WhatsappIcon />} text="Contato com o Labirinto" onClick={() => openModal('contact')} />
                   
-                  <div className="flex sm:flex-col justify-around items-center pt-2 sm:pt-0 sm:space-y-3 gap-4 sm:gap-0">
+                  <div className="flex justify-around items-center pt-2 gap-4">
                       <div className="group relative">
                           <LinkButton
                               icon={<InfoIcon />}
                               text="Quem somos nós?"
                               onClick={() => openModal('about')}
-                              className="icon-only-mobile"
+                              className="icon-only-button"
                           />
-                          <span className="tooltip-mobile">Quem somos nós?</span>
+                          <span className="tooltip">Quem somos nós?</span>
                       </div>
                       <div className="group relative">
                           <LinkButton
                               icon={<InstagramIcon />}
                               text="Insta do Labirinto"
                               onClick={() => openModal('instagram')}
-                              className="icon-only-mobile"
+                              className="icon-only-button"
                           />
-                          <span className="tooltip-mobile">Insta do Labirinto</span>
+                          <span className="tooltip">Insta do Labirinto</span>
                       </div>
                       <div className="group relative">
                           <LinkAnchor
                               icon={<RadioIcon />}
                               text="Ouça no site da Clube FM"
                               href={RADIO_URL}
-                              className="icon-only-mobile"
+                              className="icon-only-button"
                           />
-                          <span className="tooltip-mobile">Ouça no site da Clube FM</span>
+                          <span className="tooltip">Ouça no site da Clube FM</span>
                       </div>
                   </div>
                 </div>
@@ -449,25 +448,25 @@ const App: React.FC = () => {
             text-align: center;
             margin-right: 2rem; /* width + margin-right of icon */
         }
-        .icon-only-mobile {
-            width: 3rem; /* Reduced size */
-            height: 3rem; /* Reduced size */
+        .icon-only-button {
+            width: 3rem; 
+            height: 3rem; 
             padding: 0;
             justify-content: center;
             border-radius: 9999px;
         }
-        .icon-only-mobile:hover {
+        .icon-only-button:hover {
             transform: scale(1.1);
         }
-        .icon-only-mobile > svg {
+        .icon-only-button > svg {
             margin-right: 0;
-            width: 1.25rem; /* Slightly smaller icon */
-            height: 1.25rem; /* Slightly smaller icon */
+            width: 1.25rem;
+            height: 1.25rem;
         }
-        .icon-only-mobile > span {
+        .icon-only-button > span {
             display: none;
         }
-        .tooltip-mobile {
+        .tooltip {
             position: absolute;
             bottom: 100%;
             left: 50%;
@@ -485,30 +484,8 @@ const App: React.FC = () => {
             white-space: nowrap;
             z-index: 20;
         }
-        .group:hover .tooltip-mobile {
+        .group:hover .tooltip {
             opacity: 1;
-        }
-        @media (min-width: 640px) {
-            .icon-only-mobile {
-                width: 100%;
-                height: auto;
-                padding: 0.6rem 1rem; /* Match reduced padding */
-                border-radius: 0.75rem;
-            }
-             .icon-only-mobile:hover {
-                transform: translateY(-2px) scale(1.02);
-            }
-            .icon-only-mobile > svg {
-                margin-right: auto;
-                width: 1rem; /* Match reduced icon size */
-                height: 1rem; /* Match reduced icon size */
-            }
-            .icon-only-mobile > span {
-                display: block;
-            }
-            .tooltip-mobile {
-                display: none;
-            }
         }
         .subliminal-text {
             position: absolute;

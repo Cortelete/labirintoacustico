@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 
 // Import constants and types
@@ -27,6 +28,7 @@ import LiveIcon from './components/icons/LiveIcon';
 import MusicNoteIcon from './components/icons/MusicNoteIcon';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
 import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
+import GamesIcon from './components/icons/GamesIcon';
 
 
 const App: React.FC = () => {
@@ -236,6 +238,29 @@ const App: React.FC = () => {
                 </button>
             </form>
         );
+      case 'games':
+        return (
+          <div className="text-center relative overflow-hidden p-4 min-h-[250px] flex flex-col justify-center items-center">
+              <div className="space-y-4 z-10">
+                  <h3 className="text-3xl font-bold animate-pulse bg-gradient-to-r from-purple-400 to-green-400 text-transparent bg-clip-text">
+                    EM CONSTRUÇÃO
+                  </h3>
+                  <p className="text-slate-300 text-md">
+                    Nossos aliens programadores estão em velocidade de dobra para trazer joguinhos cósmicos para você!
+                  </p>
+                  <p className="text-slate-400 text-sm">Volte em breve, viajante espacial! 🚀</p>
+              </div>
+              <div className="absolute inset-0 pointer-events-none">
+                  <span className="cosmic-element" style={{ top: '10%', left: '15%', animationDelay: '0s' }}>✨</span>
+                  <span className="cosmic-element" style={{ top: '80%', left: '85%', animationDelay: '-3s' }}>⭐</span>
+                  <span className="cosmic-element alien" style={{ top: '50%', left: '5%', animationDelay: '-6s' }}>👽</span>
+                  <span className="cosmic-element ufo" style={{ top: '25%', left: '80%', animationDelay: '-1s' }}>🛸</span>
+                  <span className="cosmic-element" style={{ top: '70%', left: '20%', animationDelay: '-8s' }}>✨</span>
+                   <span className="cosmic-element" style={{ top: '5%', left: '50%', animationDelay: '-4s' }}>⭐</span>
+                  <span className="cosmic-element alien" style={{ top: '90%', left: '40%', animationDelay: '-2s' }}>👾</span>
+              </div>
+          </div>
+        );
       case 'instagram':
         return (
           <div className="text-center">
@@ -336,8 +361,8 @@ const App: React.FC = () => {
                 <div className="w-full max-w-sm space-y-3 mt-4">
                   <LinkAnchor icon={<ShoppingCartIcon />} text="Loja Intergaláctica" href={SHOP_URL} />
                   <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
+                  <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
                   <LinkButton icon={<MegaphoneIcon />} text="Anunciar no Labirinto" onClick={() => openModal('advertise')} />
-                  <LinkButton icon={<WhatsappIcon />} text="Contato com o Labirinto" onClick={() => openModal('contact')} />
                   
                   <div className="flex justify-around items-center pt-2 gap-4">
                       <div className="group relative">
@@ -366,6 +391,15 @@ const App: React.FC = () => {
                               className="icon-only-button"
                           />
                           <span className="tooltip">Ouça no site da Clube FM</span>
+                      </div>
+                      <div className="group relative">
+                          <LinkButton
+                              icon={<WhatsappIcon />}
+                              text="Contato com o Labirinto"
+                              onClick={() => openModal('contact')}
+                              className="icon-only-button"
+                          />
+                          <span className="tooltip">Contato com o Labirinto</span>
                       </div>
                   </div>
                 </div>
@@ -511,6 +545,21 @@ const App: React.FC = () => {
                 transform: translate(10px, -10px) scale(1.02) rotate(2deg);
             }
         }
+        .cosmic-element {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: float-around 10s infinite ease-in-out;
+            text-shadow: 0 0 8px #a855f7, 0 0 15px #34d399;
+        }
+        @keyframes float-around {
+            0%, 100% { transform: translateY(10px) scale(0.9); opacity: 0; }
+            20% { transform: translateY(-20px) scale(1.1) rotate(15deg); opacity: 0.8; }
+            50% { transform: translateY(0px) scale(1) rotate(-10deg); opacity: 1; }
+            80% { transform: translateY(15px) scale(0.95) rotate(10deg); opacity: 0.5; }
+        }
+        .cosmic-element.alien { font-size: 2rem; }
+        .cosmic-element.ufo { font-size: 2.2rem; }
         @media (min-width: 640px) {
             .subliminal-text {
                 font-size: 4rem;
@@ -540,6 +589,7 @@ const MODAL_TITLES = {
     contact: 'Fale Conosco',
     requestSong: 'Peça sua Música',
     advertise: 'Anuncie Conosco',
+    games: 'Área de Joguinhos 👾',
     instagram: 'Siga-nos no Instagram',
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento'

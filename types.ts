@@ -1,1 +1,1 @@
-export type ModalType = 'about' | 'contact' | 'instagram' | 'developerInfo' | 'developerContact' | 'requestSong' | 'advertise' | null;
+export type ModalType = 'about' | 'contact' | 'instagram' | 'developerInfo' | 'developerContact' | 'requestSong' | 'advertise' | 'games' | null;

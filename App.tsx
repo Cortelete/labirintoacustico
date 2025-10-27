@@ -9,7 +9,8 @@ import {
   RADIO_URL, 
   RADIO_STREAM_URL, 
   DEVELOPER_WHATSAPP_NUMBER, 
-  DEVELOPER_INSTAGRAM_URL 
+  DEVELOPER_INSTAGRAM_URL,
+  SHOP_URL
 } from './constants';
 import { ModalType } from './types';
 
@@ -25,6 +26,7 @@ import PauseIcon from './components/icons/PauseIcon';
 import LiveIcon from './components/icons/LiveIcon';
 import MusicNoteIcon from './components/icons/MusicNoteIcon';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
+import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
 
 
 const App: React.FC = () => {
@@ -332,6 +334,7 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="w-full max-w-sm space-y-3 mt-4">
+                  <LinkAnchor icon={<ShoppingCartIcon />} text="Loja Intergaláctica" href={SHOP_URL} />
                   <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
                   <LinkButton icon={<MegaphoneIcon />} text="Anunciar no Labirinto" onClick={() => openModal('advertise')} />
                   <LinkButton icon={<WhatsappIcon />} text="Contato com o Labirinto" onClick={() => openModal('contact')} />

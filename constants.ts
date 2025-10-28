@@ -15,4 +15,4 @@ export const RADIO_URL = "https://portalclube941.com.br/radio-clube-pontagrossen
 export const RADIO_STREAM_URL = "https://stm1.voxplayer.com.br:7086/stream";
 export const DEVELOPER_WHATSAPP_NUMBER = "5541988710303";
 export const DEVELOPER_INSTAGRAM_URL = "https://www.instagram.com/inteligenciarte.ia/";
-export const SHOP_URL = "https://montink.com/labirinto-acustico/";
+export const SHOP_URL = "https://montink.com/labirintoacustico";

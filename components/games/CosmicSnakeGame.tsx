@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 // Game constants
 const GRID_SIZE = 20;
 const INITIAL_SPEED = 200;
+const INITIAL_LIVES = 3;
 
 const LEVEL_THRESHOLDS = [
     { score: 10, name: 'Planeta Lava', speed: 150, className: 'level-2' },
@@ -31,6 +32,8 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
     const [levelInfo, setLevelInfo] = useState({ name: 'Nebulosa Neon', className: 'level-1' });
+    const [lives, setLives] = useState(INITIAL_LIVES);
+    const [isPaused, setIsPaused] = useState(false);
 
     const gameLoopRef = useRef<number | null>(null);
     const directionRef = useRef(direction);
@@ -48,36 +51,31 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
         directionRef.current = { x: 1, y: 0 };
         setSpeed(INITIAL_SPEED);
         setScore(0);
+        setLives(INITIAL_LIVES);
         setGameOver(false);
+        setIsPaused(false);
         setLevelInfo({ name: 'Nebulosa Neon', className: 'level-1' });
     }, []);
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (isPaused) return;
         const { x, y } = directionRef.current;
         switch (e.key) {
-            case 'ArrowUp':
-                if (y === 0) directionRef.current = { x: 0, y: -1 };
-                break;
-            case 'ArrowDown':
-                if (y === 0) directionRef.current = { x: 0, y: 1 };
-                break;
-            case 'ArrowLeft':
-                if (x === 0) directionRef.current = { x: -1, y: 0 };
-                break;
-            case 'ArrowRight':
-                if (x === 0) directionRef.current = { x: 1, y: 0 };
-                break;
+            case 'ArrowUp': if (y === 0) directionRef.current = { x: 0, y: -1 }; break;
+            case 'ArrowDown': if (y === 0) directionRef.current = { x: 0, y: 1 }; break;
+            case 'ArrowLeft': if (x === 0) directionRef.current = { x: -1, y: 0 }; break;
+            case 'ArrowRight': if (x === 0) directionRef.current = { x: 1, y: 0 }; break;
         }
-    }, []);
+    }, [isPaused]);
 
     const handleTouchStart = useCallback((e: TouchEvent) => {
-        if (isGameOverRef.current) return;
+        if (isGameOverRef.current || isPaused) return;
         e.preventDefault();
         touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }, []);
+    }, [isPaused]);
 
     const handleTouchMove = useCallback((e: TouchEvent) => {
-        if (isGameOverRef.current) return;
+        if (isGameOverRef.current || isPaused) return;
         e.preventDefault();
         if (!touchStartRef.current) return;
         
@@ -89,21 +87,15 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
         const { x, y } = directionRef.current;
         
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            if (deltaX > 0 && x === 0) {
-                directionRef.current = { x: 1, y: 0 };
-            } else if (deltaX < 0 && x === 0) {
-                directionRef.current = { x: -1, y: 0 };
-            }
+            if (deltaX > 0 && x === 0) directionRef.current = { x: 1, y: 0 };
+            else if (deltaX < 0 && x === 0) directionRef.current = { x: -1, y: 0 };
         } else {
-            if (deltaY > 0 && y === 0) {
-                directionRef.current = { x: 0, y: 1 };
-            } else if (deltaY < 0 && y === 0) {
-                directionRef.current = { x: 0, y: -1 };
-            }
+            if (deltaY > 0 && y === 0) directionRef.current = { x: 0, y: 1 };
+            else if (deltaY < 0 && y === 0) directionRef.current = { x: 0, y: -1 };
         }
         
         touchStartRef.current = null;
-    }, []);
+    }, [isPaused]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);
@@ -123,9 +115,25 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
         };
     }, [handleKeyDown, handleTouchStart, handleTouchMove]);
 
-    const gameTick = useCallback(() => {
-        if (gameOver) return;
+    const handleDeath = useCallback(() => {
+        if (lives > 1) {
+            setLives(l => l - 1);
+            setIsPaused(true);
+            setTimeout(() => {
+                setSnake(INITIAL_SNAKE);
+                setDirection({ x: 1, y: 0 });
+                directionRef.current = { x: 1, y: 0 };
+                setIsPaused(false);
+            }, 1500);
+        } else {
+            setLives(0);
+            setGameOver(true);
+        }
+    }, [lives]);
 
+    const gameTick = useCallback(() => {
+        if (gameOver || isPaused) return;
+        
         setDirection(directionRef.current);
         
         setSnake(prevSnake => {
@@ -134,14 +142,16 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
             head.x += directionRef.current.x;
             head.y += directionRef.current.y;
 
+            // Wall collision
             if (head.x >= GRID_SIZE || head.x < 0 || head.y >= GRID_SIZE || head.y < 0) {
-                setGameOver(true);
+                handleDeath();
                 return prevSnake;
             }
 
+            // Self collision
             for (let i = 1; i < newSnake.length; i++) {
                 if (head.x === newSnake[i].x && head.y === newSnake[i].y) {
-                    setGameOver(true);
+                    handleDeath();
                     return prevSnake;
                 }
             }
@@ -156,17 +166,16 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
                     newFoodPos = getRandomCoord();
                 } while (newSnake.some(segment => segment.x === newFoodPos.x && segment.y === newFoodPos.y));
                 setFood(newFoodPos);
-
             } else {
                 newSnake.pop();
             }
 
             return newSnake;
         });
-    }, [food.x, food.y, gameOver]);
+    }, [food.x, food.y, gameOver, isPaused, handleDeath]);
 
     useEffect(() => {
-        if (!gameOver) {
+        if (!gameOver && !isPaused) {
             gameLoopRef.current = setInterval(gameTick, speed);
         } else if (gameLoopRef.current) {
             clearInterval(gameLoopRef.current);
@@ -174,13 +183,19 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
         return () => {
             if (gameLoopRef.current) clearInterval(gameLoopRef.current);
         };
-    }, [gameTick, gameOver, speed]);
+    }, [gameTick, gameOver, speed, isPaused]);
     
     useEffect(() => {
         const newLevel = LEVEL_THRESHOLDS.slice().reverse().find(l => score >= l.score);
         if (newLevel) {
             setLevelInfo({ name: newLevel.name, className: newLevel.className });
-            setSpeed(newLevel.speed);
+            if (score > 70) { // After final defined level
+                const extraScore = score - 70;
+                const speedReduction = Math.floor(extraScore / 5) * 4; // Speed up every 5 points
+                setSpeed(Math.max(35, newLevel.speed - speedReduction)); // Cap speed at 35ms
+            } else {
+                setSpeed(newLevel.speed);
+            }
         } else {
             setLevelInfo({ name: 'Nebulosa Neon', className: 'level-1' });
             setSpeed(INITIAL_SPEED);
@@ -191,9 +206,14 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
     return (
         <div className="flex flex-col items-center text-white">
             <div className="w-full flex justify-between items-center mb-4 px-2">
-                <h3 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-green-400 text-transparent bg-clip-text">
-                    Pontuação: {score}
-                </h3>
+                <div>
+                    <h3 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-green-400 text-transparent bg-clip-text">
+                        Score: {score}
+                    </h3>
+                     <p className="text-lg font-bold text-pink-400">
+                        Vidas: {'❤️'.repeat(lives)}
+                    </p>
+                </div>
                 <div className="text-right">
                     <p className="font-semibold text-sm">{levelInfo.name}</p>
                     <p className="text-xs text-slate-400">Nível {levelInfo.className.split('-')[1]}</p>
@@ -204,7 +224,7 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
                 className={`relative grid grid-cols-20 grid-rows-20 w-full aspect-square bg-black/50 border-2 rounded-lg overflow-hidden transition-all duration-500 ${levelInfo.className}`}
                 style={{ gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`, gridTemplateRows: `repeat(${GRID_SIZE}, 1fr)` }}
             >
-                {gameOver && (
+                {gameOver ? (
                     <div className="absolute inset-0 bg-black/80 z-20 flex flex-col justify-center items-center text-center p-4">
                         <h2 className="text-2xl font-bold text-red-500 mb-2">Game Over</h2>
                         <p className="text-slate-300 mb-4">{playerName}, você foi engolido pelo cosmos!</p>
@@ -212,6 +232,10 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
                         <button onClick={resetGame} className="bg-green-500 hover:bg-green-600 transition-colors text-white font-bold py-2 px-6 rounded-lg">
                             Tentar Novamente
                         </button>
+                    </div>
+                ) : isPaused && (
+                     <div className="absolute inset-0 bg-black/70 z-20 flex flex-col justify-center items-center text-center p-4">
+                        <h2 className="text-2xl font-bold text-yellow-400 animate-pulse">Colisão!</h2>
                     </div>
                 )}
                 

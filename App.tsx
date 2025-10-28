@@ -29,7 +29,11 @@ import MusicNoteIcon from './components/icons/MusicNoteIcon';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
 import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
 import GamesIcon from './components/icons/GamesIcon';
+import BombIcon from './components/icons/BombIcon';
+import GuitarIcon from './components/icons/GuitarIcon';
 import CosmicSnakeGame from './components/games/CosmicSnakeGame';
+import BomberAlienGame from './components/games/BomberAlien';
+import RockInvadersGame from './components/games/RockInvadersGame';
 
 
 const App: React.FC = () => {
@@ -64,6 +68,9 @@ const App: React.FC = () => {
 
   // Game State
   const [snakePlayerName, setSnakePlayerName] = useState('');
+  const [bomberAlienPlayerName, setBomberAlienPlayerName] = useState('');
+  const [rockInvadersPlayerName, setRockInvadersPlayerName] = useState('');
+
 
   // Subtitle cycling effect
   useEffect(() => {
@@ -274,6 +281,18 @@ const App: React.FC = () => {
                   >
                       🚀 Jogar Cosmic Snake
                   </button>
+                   <button
+                        onClick={() => openModal('requestBomberAlienPlayerName')}
+                        className="w-full bg-orange-600 hover:bg-orange-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
+                    >
+                        <BombIcon className="w-5 h-5" /> Jogar Bomber Alien
+                    </button>
+                    <button
+                        onClick={() => openModal('requestRockInvadersPlayerName')}
+                        className="w-full bg-pink-600 hover:bg-pink-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
+                    >
+                        <GuitarIcon className="w-5 h-5" /> Jogar Rock Invaders
+                    </button>
               </div>
           </div>
         );
@@ -300,6 +319,60 @@ const App: React.FC = () => {
       case 'cosmicSnakeGame':
         return (
             <CosmicSnakeGame playerName={snakePlayerName || 'Viajante'} onClose={closeModal} />
+        );
+      case 'requestBomberAlienPlayerName':
+        return (
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                openModal('bomberAlienGame');
+            }} className="space-y-4 text-center">
+                <p className="text-slate-300">Insira seu nome de especialista em demolição:</p>
+                <input
+                    type="text"
+                    placeholder="Seu nome"
+                    value={bomberAlienPlayerName}
+                    onChange={e => setBomberAlienPlayerName(e.target.value)}
+                    required
+                    className="input-field"
+                />
+                <button type="submit" className="w-full bg-purple-500 hover:bg-purple-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                    Iniciar Jogo
+                </button>
+            </form>
+        );
+    case 'bomberAlienGame':
+        return (
+            <BomberAlienGame 
+                playerName={bomberAlienPlayerName || 'Detonador'} 
+                onClose={closeModal} 
+            />
+        );
+    case 'requestRockInvadersPlayerName':
+        return (
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                openModal('rockInvadersGame');
+            }} className="space-y-4 text-center">
+                <p className="text-slate-300">Assine o contrato com seu nome de Rockstar para entrar no palco cósmico:</p>
+                <input
+                    type="text"
+                    placeholder="Seu nome de astro do rock"
+                    value={rockInvadersPlayerName}
+                    onChange={e => setRockInvadersPlayerName(e.target.value)}
+                    required
+                    className="input-field"
+                />
+                <button type="submit" className="w-full bg-pink-500 hover:bg-pink-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                    Entrar no Palco
+                </button>
+            </form>
+        );
+    case 'rockInvadersGame':
+        return (
+            <RockInvadersGame
+                playerName={rockInvadersPlayerName || 'Astro do Rock'}
+                onClose={closeModal}
+            />
         );
       case 'instagram':
         return (
@@ -607,22 +680,10 @@ const App: React.FC = () => {
         }
 
         /* Cosmic Snake Game Styles */
-        .snake-segment {
-            border-radius: 20%;
-            transition: all 0.1s linear;
-        }
-        .snake-head {
-            border-radius: 40% 40% 20% 20%;
-            z-index: 10;
-        }
-        .food-orb {
-            border-radius: 50%;
-            animation: pulse-food 2s infinite ease-in-out;
-        }
-        @keyframes pulse-food {
-            0%, 100% { transform: scale(0.9); box-shadow: 0 0 10px currentColor; }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px currentColor; }
-        }
+        .snake-segment { border-radius: 20%; transition: all 0.1s linear; }
+        .snake-head { border-radius: 40% 40% 20% 20%; z-index: 10; }
+        .food-orb { border-radius: 50%; animation: pulse-food 2s infinite ease-in-out; }
+        @keyframes pulse-food { 0%, 100% { transform: scale(0.9); box-shadow: 0 0 10px currentColor; } 50% { transform: scale(1.1); box-shadow: 0 0 20px currentColor; } }
         .level-1 { border-color: #a855f7; background: radial-gradient(circle, #2c1a4c, #1a0f2c); }
         .level-1 .snake-segment { background-color: #00ffff; box-shadow: 0 0 8px #00ffff; }
         .level-1 .food-orb { background-color: #f0f; color: #f0f; }
@@ -639,6 +700,63 @@ const App: React.FC = () => {
         @keyframes rotate-bg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .level-5 .snake-segment { background-color: white; box-shadow: 0 0 10px #ec4899; }
         .level-5 .food-orb { background-color: #f43f5e; color: #f43f5e; }
+
+        /* Bomber Alien Game Styles */
+        .bomber-grid { display: grid; position: absolute; inset: 0; background-color: #1e293b; border-radius: 0.25rem; }
+        .bomber-cell { width: 100%; height: 100%; }
+        .bomber-floor { background-color: #334155; }
+        .bomber-wall-indestructible { background-color: #475569; border: 1px solid #64748b; }
+        .bomber-wall-destructible { background-color: #a16207; background-image: linear-gradient(45deg, #ca8a04 25%, transparent 25%, transparent 75%, #ca8a04 75%, #ca8a04), linear-gradient(-45deg, #ca8a04 25%, transparent 25%, transparent 75%, #ca8a04 75%, #ca8a04); background-size: 8px 8px; }
+        .bomber-player { position: absolute; background: radial-gradient(circle, #6ee7b7, #10b981); border-radius: 50%; width: 7.69%; /* 100/13 */ height: 9.09%; /* 100/11 */ transition: all 0.1s linear; z-index: 10; box-shadow: 0 0 8px #34d399; }
+        .bomber-ai { position: absolute; background: radial-gradient(circle, #f87171, #dc2626); border-radius: 50%; width: 7.69%; height: 9.09%; transition: all 0.1s linear; z-index: 9; box-shadow: 0 0 8px #ef4444; }
+        .bomber-bomb { position: absolute; background: radial-gradient(circle, #4c4c4c, #1a1a1a); border-radius: 50%; width: 7.69%; height: 9.09%; z-index: 5; animation: pulse-bomb 1s infinite; }
+        @keyframes pulse-bomb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 10px #facc15; } }
+        .bomber-explosion { position: absolute; background-color: #f59e0b; width: 7.69%; height: 9.09%; z-index: 20; animation: flash-explosion 0.5s forwards; }
+        @keyframes flash-explosion { from { transform: scale(0.5); opacity: 1; border-radius: 50%; } to { transform: scale(1.5); opacity: 0; border-radius: 0; } }
+        .bomber-d-pad { display: grid; grid-template-areas: ". up ." "left . right" ". down ."; width: 100px; height: 100px; }
+        .bomber-d-pad button { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; font-size: 1.5rem; }
+        .bomber-d-pad button:active { background-color: rgba(168, 85, 247, 0.5); }
+        .d-pad-up { grid-area: up; border-radius: 0.5rem 0.5rem 0 0; }
+        .d-pad-down { grid-area: down; border-radius: 0 0 0.5rem 0.5rem; }
+        .d-pad-left { grid-area: left; border-radius: 0.5rem 0 0 0.5rem; }
+        .d-pad-right { grid-area: right; border-radius: 0 0.5rem 0.5rem 0; }
+        .bomber-action button { width: 80px; height: 80px; border-radius: 50%; background-color: #dc2626; border: 1px solid #f87171; font-size: 2.5rem; }
+        .bomber-action button:active { background-color: #ef4444; }
+
+        /* Rock Invaders Game Styles */
+        .rock-invaders-canvas {
+            border-radius: 0.5rem;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5), 0 0 5px rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(236, 72, 153, 0.6);
+            touch-action: none; /* Prevent default touch actions like scrolling */
+        }
+        .mobile-controls { display: none; }
+        @media (hover: none) and (pointer: coarse), (max-width: 768px) {
+            .mobile-controls {
+                display: flex;
+                justify-content: center; /* Centered the controls */
+                width: 100%;
+                margin-top: 0.5rem;
+                padding: 0 1rem;
+                user-select: none;
+            }
+            .mobile-controls .move-buttons button, .mobile-controls .action-button button {
+                width: 60px; /* Increased button size */
+                height: 60px; /* Increased button size */
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(219, 39, 119, 0.4);
+                color: white;
+                font-size: 1.8rem; /* Increased icon size */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .mobile-controls .move-buttons {
+                display: flex;
+                gap: 1rem;
+            }
+        }
 
         /* Responsiveness */
         @media (max-width: 640px) {
@@ -698,6 +816,10 @@ const MODAL_TITLES = {
     games: 'Área de Joguinhos 👾',
     requestPlayerName: 'Identificação de Piloto',
     cosmicSnakeGame: 'Cosmic Snake',
+    requestBomberAlienPlayerName: 'Registro de Demolição',
+    bomberAlienGame: 'Bomber Alien',
+    requestRockInvadersPlayerName: 'Assine o Contrato, Rockstar!',
+    rockInvadersGame: 'Rock Invaders',
     instagram: 'Siga-nos no Instagram',
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento'

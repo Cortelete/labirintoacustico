@@ -1,1 +1,1 @@
-export type ModalType = 'about' | 'contact' | 'instagram' | 'developerInfo' | 'developerContact' | 'requestSong' | 'advertise' | 'games' | 'requestPlayerName' | 'cosmicSnakeGame' | null;
+export type ModalType = 'about' | 'contact' | 'instagram' | 'developerInfo' | 'developerContact' | 'requestSong' | 'advertise' | 'games' | 'requestPlayerName' | 'cosmicSnakeGame' | 'requestBomberAlienPlayerName' | 'bomberAlienGame' | 'requestRockInvadersPlayerName' | 'rockInvadersGame' | null;

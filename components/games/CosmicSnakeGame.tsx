@@ -32,10 +32,14 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
     const [score, setScore] = useState(0);
     const [levelInfo, setLevelInfo] = useState({ name: 'Nebulosa Neon', className: 'level-1' });
 
-    // Fix: In a browser environment, setInterval returns a number, not a NodeJS.Timeout.
     const gameLoopRef = useRef<number | null>(null);
     const directionRef = useRef(direction);
     const touchStartRef = useRef<{ x: number, y: number } | null>(null);
+    const isGameOverRef = useRef(gameOver);
+
+    useEffect(() => {
+        isGameOverRef.current = gameOver;
+    }, [gameOver]);
 
     const resetGame = useCallback(() => {
         setSnake(INITIAL_SNAKE);
@@ -67,11 +71,13 @@ const CosmicSnakeGame: React.FC<CosmicSnakeGameProps> = ({ playerName, onClose }
     }, []);
 
     const handleTouchStart = useCallback((e: TouchEvent) => {
+        if (isGameOverRef.current) return;
         e.preventDefault();
         touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }, []);
 
     const handleTouchMove = useCallback((e: TouchEvent) => {
+        if (isGameOverRef.current) return;
         e.preventDefault();
         if (!touchStartRef.current) return;
         

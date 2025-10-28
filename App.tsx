@@ -17,6 +17,7 @@ import { ModalType } from './types';
 
 // Import components and icons
 import Modal from './components/Modal';
+import Stars from './components/Stars';
 import InfoIcon from './components/icons/InfoIcon';
 import WhatsappIcon from './components/icons/WhatsappIcon';
 import InstagramIcon from './components/icons/InstagramIcon';
@@ -422,9 +423,10 @@ const App: React.FC = () => {
           <span className="subliminal-text" style={{ top: '10%', left: '60%', animationDelay: '2s' }}>TRANSMISSÃO CÓSMICA</span>
           <span className="subliminal-text" style={{ top: '65%', left: '5%', animationDelay: '6s' }}>OUÇA O SINAL</span>
         </div>
+        <Stars />
         <audio ref={audioRef} src={RADIO_STREAM_URL} preload="none" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}></audio>
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
-            <main className="w-full max-w-lg mx-auto bg-slate-900/50 backdrop-blur-md border border-purple-500/20 rounded-3xl shadow-2xl shadow-purple-900/40 p-6 sm:p-8 text-center flex flex-col items-center">
+            <main className="w-full max-w-lg mx-auto bg-slate-900/40 backdrop-blur-lg border border-purple-500/20 rounded-3xl shadow-2xl shadow-purple-900/40 p-6 sm:p-8 text-center flex flex-col items-center">
                 <div 
                     className="w-32 h-32 sm:w-36 sm:h-36 mb-4 cursor-pointer"
                     onClick={handleLogoClick}
@@ -437,7 +439,7 @@ const App: React.FC = () => {
                 </div>
                 
                 <h1 
-                  className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-white to-green-400 animated-gradient text-gradient cursor-pointer"
+                  className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text animated-gradient text-gradient cursor-pointer"
                   onClick={() => openModal('about')}
                 >
                   Labirinto Acústico
@@ -528,6 +530,29 @@ const App: React.FC = () => {
         </Modal>
       </div>
       <style>{`
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation-name: twinkle;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            box-shadow: 0 0 4px #fff, 0 0 6px #fff, 0 0 10px #c084fc;
+        }
+        @keyframes twinkle {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
         .input-field {
             width: 100%;
             background-color: rgba(255, 255, 255, 0.1);
@@ -797,14 +822,14 @@ const App: React.FC = () => {
 const LinkButton: React.FC<{icon: React.ReactNode, text: string, onClick: () => void, className?: string}> = ({ icon, text, onClick, className = '' }) => (
     <button onClick={onClick} className={`link-button-style ${className}`}>
         {icon}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-white to-green-400 animated-gradient text-gradient">{text}</span>
+        <span className="text-transparent bg-clip-text animated-gradient text-gradient">{text}</span>
     </button>
 );
 
 const LinkAnchor: React.FC<{icon: React.ReactNode, text: string, href: string, className?: string}> = ({ icon, text, href, className = '' }) => (
     <a href={href} target="_blank" rel="noopener noreferrer" className={`link-button-style ${className}`}>
         {icon}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-white to-green-400 animated-gradient text-gradient">{text}</span>
+        <span className="text-transparent bg-clip-text animated-gradient text-gradient">{text}</span>
     </a>
 );
 

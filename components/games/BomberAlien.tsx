@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 // --- Constants ---
@@ -7,7 +8,7 @@ const BOMB_TIMER = 2500;
 const EXPLOSION_DURATION = 500;
 const TICK_RATE = 100;
 const INITIAL_LIVES = 3;
-// FIX: Define the DIRECTIONS constant used for movement calculations.
+const MOVEMENT_INTERVAL = 150; // Interval for analog stick movement
 const DIRECTIONS = [
     { x: 0, y: -1 }, // Up
     { x: 0, y: 1 },  // Down
@@ -59,11 +60,15 @@ const BomberAlienGame: React.FC<BomberAlienProps> = ({ playerName }) => {
     const [playerLives, setPlayerLives] = useState(INITIAL_LIVES);
     const [score, setScore] = useState(0);
     const [level, setLevel] = useState(1);
+    const [stickPos, setStickPos] = useState({ top: '50%', left: '50%' });
     
     const gameLoopRef = useRef<number | null>(null);
     const gameStateRef = useRef(gameState);
     const aiDecisionCooldown = useRef(0);
     const aiBombCooldown = useRef(0);
+    const analogStickBaseRef = useRef<HTMLDivElement>(null);
+    const moveIntervalRef = useRef<number | null>(null);
+    const currentMoveDirectionRef = useRef<string | null>(null);
     
     const playerPosRef = useRef(playerPos);
     const aiPosRef = useRef(aiPos);
@@ -200,7 +205,7 @@ const BomberAlienGame: React.FC<BomberAlienProps> = ({ playerName }) => {
         const explosionsAfterTick = [...currentExplosions.map(ex => ({...ex, timer: ex.timer - TICK_RATE })).filter(ex => ex.timer > 0), ...newExplosions];
     
         const playerIsHit = explosionsAfterTick.some(ex => ex.pos.x === currentPlayerPos.x && ex.pos.y === currentPlayerPos.y);
-        const aiIsHit = explosionsAfterTick.some(ex => ex.pos.x === currentAiPos.x && ex.pos.y === currentAiPos.y);
+        const aiIsHit = explosionsAfterTick.some(ex => ex.pos.x === currentAiPos.x && ex.pos.y === currentAiPos.y && ex.owner === 'player');
         
         let nextGameState: GameState = gameStateRef.current;
         if (playerIsHit) {
@@ -256,6 +261,67 @@ const BomberAlienGame: React.FC<BomberAlienProps> = ({ playerName }) => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
     
+    const handleStickMove = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
+        if (gameStateRef.current !== 'playing' || !analogStickBaseRef.current) return;
+        const rect = analogStickBaseRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+
+        const deltaX = touchX - centerX;
+        const deltaY = touchY - centerY;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        const radius = rect.width / 2;
+        const knobRadius = 25;
+
+        const clampedDistance = Math.min(distance, radius - knobRadius);
+        const angle = Math.atan2(deltaY, deltaX);
+
+        const knobX = clampedDistance * Math.cos(angle);
+        const knobY = clampedDistance * Math.sin(angle);
+
+        setStickPos({
+            left: `${knobX + radius}px`,
+            top: `${knobY + radius}px`,
+        });
+
+        let direction: string | null = null;
+        if (distance > radius * 0.2) { // Dead zone
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                direction = deltaX > 0 ? 'right' : 'left';
+            } else {
+                direction = deltaY > 0 ? 'down' : 'up';
+            }
+        }
+
+        if (direction !== currentMoveDirectionRef.current) {
+            if (moveIntervalRef.current) clearInterval(moveIntervalRef.current);
+            currentMoveDirectionRef.current = direction;
+
+            if (direction) {
+                const move = () => {
+                    switch(direction) {
+                        case 'up': movePlayer(0, -1); break;
+                        case 'down': movePlayer(0, 1); break;
+                        case 'left': movePlayer(-1, 0); break;
+                        case 'right': movePlayer(1, 0); break;
+                    }
+                };
+                move();
+                moveIntervalRef.current = setInterval(move, MOVEMENT_INTERVAL);
+            }
+        }
+    }, [movePlayer]);
+
+    const handleStickEnd = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
+        if (moveIntervalRef.current) clearInterval(moveIntervalRef.current);
+        currentMoveDirectionRef.current = null;
+        setStickPos({ left: '50%', top: '50%' });
+    }, []);
+
     return (
         <div className="flex flex-col items-center text-white">
             <div className="w-full flex justify-between items-center mb-2 px-1">
@@ -303,11 +369,15 @@ const BomberAlienGame: React.FC<BomberAlienProps> = ({ playerName }) => {
                 )}
             </div>
              <div className="w-full flex justify-between items-center mt-3 px-1">
-                <div className="bomber-d-pad">
-                    <button onClick={() => movePlayer(0, -1)} className="d-pad-up">▲</button>
-                    <button onClick={() => movePlayer(0, 1)} className="d-pad-down">▼</button>
-                    <button onClick={() => movePlayer(-1, 0)} className="d-pad-left">◄</button>
-                    <button onClick={() => movePlayer(1, 0)} className="d-pad-right">►</button>
+                <div
+                    ref={analogStickBaseRef}
+                    className="bomber-analog-stick"
+                    onTouchStart={handleStickMove}
+                    onTouchMove={handleStickMove}
+                    onTouchEnd={handleStickEnd}
+                    onTouchCancel={handleStickEnd}
+                >
+                    <div className="bomber-analog-knob" style={stickPos}></div>
                 </div>
                 <div className="bomber-action">
                     <button onClick={placeBomb}>💣</button>

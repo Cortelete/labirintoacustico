@@ -426,7 +426,7 @@ const App: React.FC = () => {
         <Stars />
         <audio ref={audioRef} src={RADIO_STREAM_URL} preload="none" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}></audio>
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
-            <main className="w-full max-w-lg mx-auto bg-slate-900/40 backdrop-blur-lg border border-purple-500/20 rounded-3xl shadow-2xl shadow-purple-900/40 p-6 sm:p-8 text-center flex flex-col items-center">
+            <main className="w-full max-w-lg mx-auto bg-slate-900/60 backdrop-blur-xl border border-purple-500/20 rounded-3xl shadow-2xl shadow-purple-900/40 p-6 sm:p-8 text-center flex flex-col items-center">
                 <div 
                     className="w-32 h-32 sm:w-36 sm:h-36 mb-4 cursor-pointer"
                     onClick={handleLogoClick}
@@ -545,8 +545,8 @@ const App: React.FC = () => {
                 transform: scale(0.5);
             }
             50% {
-                opacity: 0.8;
-                transform: scale(1);
+                opacity: 1;
+                transform: scale(1.2);
             }
             100% {
                 opacity: 0;
@@ -738,14 +738,41 @@ const App: React.FC = () => {
         @keyframes pulse-bomb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 10px #facc15; } }
         .bomber-explosion { position: absolute; background-color: #f59e0b; width: 7.69%; height: 9.09%; z-index: 20; animation: flash-explosion 0.5s forwards; }
         @keyframes flash-explosion { from { transform: scale(0.5); opacity: 1; border-radius: 50%; } to { transform: scale(1.5); opacity: 0; border-radius: 0; } }
-        .bomber-d-pad { display: grid; grid-template-areas: ". up ." "left . right" ". down ."; width: 100px; height: 100px; }
-        .bomber-d-pad button { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; font-size: 1.5rem; }
-        .bomber-d-pad button:active { background-color: rgba(168, 85, 247, 0.5); }
-        .d-pad-up { grid-area: up; border-radius: 0.5rem 0.5rem 0 0; }
-        .d-pad-down { grid-area: down; border-radius: 0 0 0.5rem 0.5rem; }
-        .d-pad-left { grid-area: left; border-radius: 0.5rem 0 0 0.5rem; }
-        .d-pad-right { grid-area: right; border-radius: 0 0.5rem 0.5rem 0; }
-        .bomber-action button { width: 80px; height: 80px; border-radius: 50%; background-color: #dc2626; border: 1px solid #f87171; font-size: 2.5rem; }
+        
+        .bomber-analog-stick {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+            user-select: none;
+        }
+        .bomber-analog-knob {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(168, 85, 247, 0.5); /* purple */
+            border: 2px solid rgba(168, 85, 247, 0.8);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; /* So it doesn't interfere with the base's touch events */
+            transition: top 0.05s linear, left 0.05s linear;
+        }
+
+        .bomber-action button { 
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            background-color: #dc2626; 
+            border: 1px solid #f87171; 
+            font-size: 2.5rem; 
+            color: white;
+        }
         .bomber-action button:active { background-color: #ef4444; }
 
         /* Rock Invaders Game Styles */

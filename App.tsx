@@ -29,6 +29,7 @@ import MusicNoteIcon from './components/icons/MusicNoteIcon';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
 import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
 import GamesIcon from './components/icons/GamesIcon';
+import CosmicSnakeGame from './components/games/CosmicSnakeGame';
 
 
 const App: React.FC = () => {
@@ -61,6 +62,9 @@ const App: React.FC = () => {
   // Dev Contact Form State
   const [devContactName, setDevContactName] = useState('');
 
+  // Game State
+  const [snakePlayerName, setSnakePlayerName] = useState('');
+
   // Subtitle cycling effect
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,6 +72,19 @@ const App: React.FC = () => {
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (activeModal !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [activeModal]);
   
   // Live Status Check
   useEffect(() => {
@@ -240,26 +257,49 @@ const App: React.FC = () => {
         );
       case 'games':
         return (
-          <div className="text-center relative overflow-hidden p-4 min-h-[250px] flex flex-col justify-center items-center">
-              <div className="space-y-4 z-10">
-                  <h3 className="text-3xl font-bold animate-pulse bg-gradient-to-r from-purple-400 to-green-400 text-transparent bg-clip-text">
-                    EM CONSTRUÇÃO
+          <div className="relative text-center space-y-4 overflow-hidden p-4 min-h-[250px]">
+              <span className="cosmic-item text-4xl" style={{ top: '10%', left: '15%', animationDuration: '15s' }}>👽</span>
+              <span className="cosmic-item text-2xl" style={{ top: '70%', left: '80%', animationDuration: '20s', animationDelay: '3s' }}>✨</span>
+              <span className="cosmic-item text-3xl" style={{ top: '80%', left: '20%', animationDuration: '18s', animationDelay: '1s' }}>🚀</span>
+              <span className="cosmic-item text-4xl" style={{ top: '25%', left: '75%', animationDuration: '22s', animationDelay: '5s' }}>🪐</span>
+
+              <div className="relative z-10 bg-slate-900/60 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 space-y-4">
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 text-transparent bg-clip-text text-gradient animated-gradient">
+                      Joguinhos Cósmicos
                   </h3>
-                  <p className="text-slate-300 text-md">
-                    Nossos aliens programadores estão em velocidade de dobra para trazer joguinhos cósmicos para você!
-                  </p>
-                  <p className="text-slate-400 text-sm">Volte em breve, viajante espacial! 🚀</p>
-              </div>
-              <div className="absolute inset-0 pointer-events-none">
-                  <span className="cosmic-element" style={{ top: '10%', left: '15%', animationDelay: '0s' }}>✨</span>
-                  <span className="cosmic-element" style={{ top: '80%', left: '85%', animationDelay: '-3s' }}>⭐</span>
-                  <span className="cosmic-element alien" style={{ top: '50%', left: '5%', animationDelay: '-6s' }}>👽</span>
-                  <span className="cosmic-element ufo" style={{ top: '25%', left: '80%', animationDelay: '-1s' }}>🛸</span>
-                  <span className="cosmic-element" style={{ top: '70%', left: '20%', animationDelay: '-8s' }}>✨</span>
-                   <span className="cosmic-element" style={{ top: '5%', left: '50%', animationDelay: '-4s' }}>⭐</span>
-                  <span className="cosmic-element alien" style={{ top: '90%', left: '40%', animationDelay: '-2s' }}>👾</span>
+                  <p className="text-slate-300">Prepare-se para uma aventura intergaláctica!</p>
+                  <button
+                      onClick={() => openModal('requestPlayerName')}
+                      className="w-full bg-purple-600 hover:bg-purple-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
+                  >
+                      🚀 Jogar Cosmic Snake
+                  </button>
               </div>
           </div>
+        );
+      case 'requestPlayerName':
+        return (
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                openModal('cosmicSnakeGame');
+            }} className="space-y-4 text-center">
+                <p className="text-slate-300">Para começar, nos diga o seu nome de piloto espacial:</p>
+                <input 
+                    type="text" 
+                    placeholder="Seu nome" 
+                    value={snakePlayerName} 
+                    onChange={e => setSnakePlayerName(e.target.value)} 
+                    required 
+                    className="input-field" 
+                />
+                <button type="submit" className="w-full bg-green-500 hover:bg-green-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                    Iniciar Jogo
+                </button>
+            </form>
+        );
+      case 'cosmicSnakeGame':
+        return (
+            <CosmicSnakeGame playerName={snakePlayerName || 'Viajante'} onClose={closeModal} />
         );
       case 'instagram':
         return (
@@ -459,13 +499,13 @@ const App: React.FC = () => {
             align-items: center;
             width: 100%;
             text-align: center;
-            padding: 0.6rem 1rem; /* Reduced padding */
+            padding: 0.6rem 1rem;
             border: 1px solid rgba(255, 255, 255, 0.15);
             background: rgba(255, 255, 255, 0.05);
             border-radius: 0.75rem;
             transition: all 0.2s ease-in-out;
             font-weight: 600;
-            font-size: 0.8rem; /* Reduced font size */
+            font-size: 0.9rem;
         }
         .link-button-style:hover {
             transform: translateY(-2px) scale(1.02);
@@ -475,15 +515,15 @@ const App: React.FC = () => {
         }
         .link-button-style > svg {
             margin-right: auto;
-            width: 1rem; /* Reduced icon size */
-            height: 1rem; /* Reduced icon size */
+            width: 1.25rem;
+            height: 1.25rem;
             flex-shrink: 0;
             color: #e2e8f0; /* slate-200 */
         }
         .link-button-style > span {
             flex-grow: 1;
             text-align: center;
-            margin-right: 2rem; /* width + margin-right of icon */
+            margin-right: 2.5rem; /* width + margin-right of icon */
         }
         .icon-only-button {
             width: 3rem; 
@@ -545,21 +585,87 @@ const App: React.FC = () => {
                 transform: translate(10px, -10px) scale(1.02) rotate(2deg);
             }
         }
-        .cosmic-element {
+        
+        /* Games Modal Styles */
+        .cosmic-item {
             position: absolute;
-            font-size: 1.5rem;
+            z-index: 0;
             opacity: 0;
-            animation: float-around 10s infinite ease-in-out;
-            text-shadow: 0 0 8px #a855f7, 0 0 15px #34d399;
+            animation: float-cosmic ease-in-out infinite;
+            pointer-events: none;
+            text-shadow: 
+                0 0 4px rgba(255, 255, 255, 0.6),
+                0 0 8px rgba(168, 85, 247, 0.5),
+                0 0 16px rgba(168, 85, 247, 0.4),
+                0 0 24px rgba(52, 211, 153, 0.3);
         }
-        @keyframes float-around {
-            0%, 100% { transform: translateY(10px) scale(0.9); opacity: 0; }
-            20% { transform: translateY(-20px) scale(1.1) rotate(15deg); opacity: 0.8; }
-            50% { transform: translateY(0px) scale(1) rotate(-10deg); opacity: 1; }
-            80% { transform: translateY(15px) scale(0.95) rotate(10deg); opacity: 0.5; }
+        @keyframes float-cosmic {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-20px) translateX(15px) rotate(15deg) scale(1.1); opacity: 0.8; }
+            50% { transform: translateY(10px) translateX(-10px) rotate(-10deg) scale(0.9); opacity: 0.4; }
+            75% { transform: translateY(-15px) translateX(20px) rotate(5deg) scale(1.2); opacity: 0.9; }
         }
-        .cosmic-element.alien { font-size: 2rem; }
-        .cosmic-element.ufo { font-size: 2.2rem; }
+
+        /* Cosmic Snake Game Styles */
+        .snake-segment {
+            border-radius: 20%;
+            transition: all 0.1s linear;
+        }
+        .snake-head {
+            border-radius: 40% 40% 20% 20%;
+            z-index: 10;
+        }
+        .food-orb {
+            border-radius: 50%;
+            animation: pulse-food 2s infinite ease-in-out;
+        }
+        @keyframes pulse-food {
+            0%, 100% { transform: scale(0.9); box-shadow: 0 0 10px currentColor; }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px currentColor; }
+        }
+        .level-1 { border-color: #a855f7; background: radial-gradient(circle, #2c1a4c, #1a0f2c); }
+        .level-1 .snake-segment { background-color: #00ffff; box-shadow: 0 0 8px #00ffff; }
+        .level-1 .food-orb { background-color: #f0f; color: #f0f; }
+        .level-2 { border-color: #f97316; background: radial-gradient(circle, #6f1d1b, #4a0404); }
+        .level-2 .snake-segment { background: linear-gradient(45deg, #f97316, #fde047); box-shadow: 0 0 8px #f97316; }
+        .level-2 .food-orb { background-color: #eab308; color: #eab308; }
+        .level-3 { border-color: #84cc16; background-color: #1c1917; background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px), radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px); background-size: 550px 550px, 350px 350px; background-position: 0 0, 40px 60px; }
+        .level-3 .snake-segment { background-color: #84cc16; box-shadow: 0 0 8px #84cc16; }
+        .level-3 .food-orb { background-color: #22d3ee; color: #22d3ee; }
+        .level-4 { border-color: #34d399; background-color: #064e3b; }
+        .level-4 .snake-segment { background-color: #fde047; box-shadow: 0 0 8px #fde047; }
+        .level-4 .food-orb { background-color: #a78bfa; color: #a78bfa; }
+        .level-5 { border-color: #ec4899; background: radial-gradient(ellipse at center, #4c1d95 0%,#020617 70%); animation: rotate-bg 10s linear infinite; }
+        @keyframes rotate-bg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .level-5 .snake-segment { background-color: white; box-shadow: 0 0 10px #ec4899; }
+        .level-5 .food-orb { background-color: #f43f5e; color: #f43f5e; }
+
+        /* Responsiveness */
+        @media (max-width: 640px) {
+            main.max-w-lg {
+                padding: 1.25rem;
+                max-width: 95%;
+            }
+            div.max-w-md.m-auto {
+                max-width: 95%;
+            }
+            .link-button-style {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+            .link-button-style > svg {
+                width: 1.1rem;
+                height: 1.1rem;
+            }
+            .icon-only-button {
+                width: 2.75rem; 
+                height: 2.75rem; 
+            }
+            .icon-only-button > svg {
+                width: 1.15rem;
+                height: 1.15rem;
+            }
+        }
         @media (min-width: 640px) {
             .subliminal-text {
                 font-size: 4rem;
@@ -590,6 +696,8 @@ const MODAL_TITLES = {
     requestSong: 'Peça sua Música',
     advertise: 'Anuncie Conosco',
     games: 'Área de Joguinhos 👾',
+    requestPlayerName: 'Identificação de Piloto',
+    cosmicSnakeGame: 'Cosmic Snake',
     instagram: 'Siga-nos no Instagram',
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento'

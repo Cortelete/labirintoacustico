@@ -595,6 +595,8 @@ const App: React.FC = () => {
         .link-button-style {
             display: flex;
             align-items: center;
+            justify-content: center;
+            position: relative;
             width: 100%;
             text-align: center;
             padding: 0.6rem 1rem;
@@ -612,7 +614,10 @@ const App: React.FC = () => {
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         .link-button-style > svg {
-            margin-right: auto;
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
             width: 1.25rem;
             height: 1.25rem;
             flex-shrink: 0;
@@ -621,7 +626,7 @@ const App: React.FC = () => {
         .link-button-style > span {
             flex-grow: 1;
             text-align: center;
-            margin-right: 2.5rem; /* width + margin-right of icon */
+            /* The margin-right hack is no longer needed */
         }
         .icon-only-button {
             width: 3rem; 
@@ -634,6 +639,8 @@ const App: React.FC = () => {
             transform: scale(1.1);
         }
         .icon-only-button > svg {
+            position: static; /* Override absolute positioning */
+            transform: none; /* Override transform */
             margin-right: 0;
             width: 1.25rem;
             height: 1.25rem;

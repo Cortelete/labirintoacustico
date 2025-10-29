@@ -52,7 +52,8 @@ interface RockInvadersGameProps {
 
 const RockInvadersGame: React.FC<RockInvadersGameProps> = ({ playerName, onClose }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const gameLoopRef = useRef<number>();
+    // FIX: Changed useRef<number>() to useRef<number | null>(null) to provide a required initial value.
+    const gameLoopRef = useRef<number | null>(null);
     const lastTimeRef = useRef(0);
     const lastFireTimeRef = useRef(0);
 

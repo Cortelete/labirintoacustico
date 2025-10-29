@@ -57,6 +57,7 @@ const App: React.FC = () => {
   const [songRequestTitle, setSongRequestTitle] = useState('');
   const [songRequestVersion, setSongRequestVersion] = useState('');
   const [songRequestArtist, setSongRequestArtist] = useState('');
+  const [songRequestMessage, setSongRequestMessage] = useState('');
 
   // Advertiser Form State
   const [advertiseName, setAdvertiseName] = useState('');
@@ -152,9 +153,19 @@ const App: React.FC = () => {
 
   const handleSongRequestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Pedido de Música!\n\nNome do Ouvinte: ${songRequestName}\nMúsica: ${songRequestTitle}\nBanda/Artista: ${songRequestArtist}\nVersão: ${songRequestVersion || 'Qualquer uma'}`;
+    let message = `Pedido de Música!\n\nNome do Ouvinte: ${songRequestName}\nMúsica: ${songRequestTitle}\nBanda/Artista: ${songRequestArtist}\nVersão: ${songRequestVersion || 'Qualquer uma'}`;
+    if (songRequestMessage) {
+      message += `\n\nMensagem: ${songRequestMessage}`;
+    }
     const whatsappUrl = `https://wa.me/${SONG_REQUEST_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
+    
+    setSongRequestName('');
+    setSongRequestTitle('');
+    setSongRequestArtist('');
+    setSongRequestVersion('');
+    setSongRequestMessage('');
+
     closeModal();
   };
   
@@ -241,6 +252,7 @@ const App: React.FC = () => {
                 <input type="text" placeholder="Nome da música" value={songRequestTitle} onChange={e => setSongRequestTitle(e.target.value)} required className="input-field" />
                 <input type="text" placeholder="Banda/Cantor" value={songRequestArtist} onChange={e => setSongRequestArtist(e.target.value)} required className="input-field" />
                 <input type="text" placeholder="Versão (ex: ao vivo, acústico)" value={songRequestVersion} onChange={e => setSongRequestVersion(e.target.value)} className="input-field" />
+                <textarea placeholder="Sua mensagem (opcional)" value={songRequestMessage} onChange={e => setSongRequestMessage(e.target.value)} className="input-field min-h-[80px]"></textarea>
                 <button type="submit" className="w-full bg-green-500 hover:bg-green-600 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2">
                     <WhatsappIcon /> Enviar Pedido
                 </button>

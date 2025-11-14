@@ -98,12 +98,52 @@ const App: React.FC = () => {
   // Live Status Check
   useEffect(() => {
     const checkLiveStatus = () => {
-      const now = new Date();
-      const day = now.getDay(); // Sunday: 0, Monday: 1, Wednesday: 3
-      const hour = now.getHours();
-      
-      const live = (day === 1 || day === 3) && hour >= 22 && hour < 23;
-      setIsLive(live);
+      try {
+        const timeZone = 'America/Sao_Paulo';
+        const now = new Date();
+        
+        // Using Intl.DateTimeFormat to get the current day and hour in Brazil.
+        const formatter = new Intl.DateTimeFormat('en-GB', {
+            timeZone,
+            weekday: 'short', // Mon, Tue, etc.
+            hour: 'numeric',  // 0-23
+            hour12: false,
+        });
+
+        const parts = formatter.formatToParts(now);
+        const dayPart = parts.find(p => p.type === 'weekday');
+        const hourPart = parts.find(p => p.type === 'hour');
+
+        if (!dayPart || !hourPart) {
+          // Fallback for older browsers
+          console.warn('Could not determine time in Brazil, falling back to local time.');
+          const localNow = new Date();
+          const day = localNow.getDay(); // Sunday: 0, Monday: 1, ... Thursday: 4
+          const hour = localNow.getHours();
+          const live = (day >= 1 && day <= 4) && hour === 22;
+          setIsLive(live);
+          return;
+        }
+        
+        const dayOfWeek = dayPart.value; // e.g., "Mon", "Tue"
+        const hour = parseInt(hourPart.value, 10);
+        
+        const liveDays = ['Mon', 'Tue', 'Wed', 'Thu'];
+        const isLiveDay = liveDays.includes(dayOfWeek);
+        // The program is live from 22:00:00 to 22:59:59 (the 22nd hour).
+        const isLiveHour = hour === 22;
+
+        setIsLive(isLiveDay && isLiveHour);
+
+      } catch (error) {
+        console.error("Error checking live status with timezone, falling back to local time.", error);
+        // Fallback to local time if Intl API fails for any reason
+        const localNow = new Date();
+        const day = localNow.getDay();
+        const hour = localNow.getHours();
+        const live = (day >= 1 && day <= 4) && hour === 22;
+        setIsLive(live);
+      }
     };
 
     checkLiveStatus(); // Initial check
@@ -461,11 +501,11 @@ const App: React.FC = () => {
                   {SUBTITLES[subtitleIndex]}
                 </p>
                 <p className="mt-10 text-base sm:text-lg font-semibold text-green-400">
-                  ⏰ Segundas e Quartas às 22:00
+                  ⏰ Segunda à Quinta às 22:00
                 </p>
                 {isLive && (
                     <p className="mt-2 text-lg font-bold text-green-400 animate-pulse">
-                        ESTAMOS AO VIVO
+                        ESTAMOS AO VIVO AGORA
                     </p>
                 )}
 

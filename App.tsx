@@ -6,7 +6,9 @@ import {
   SUBTITLES, 
   WHATSAPP_NUMBER, 
   SONG_REQUEST_WHATSAPP_NUMBER,
-  INSTAGRAM_URL, 
+  INSTAGRAM_URL,
+  YOUTUBE_URL,
+  TIKTOK_URL,
   RADIO_URL, 
   RADIO_STREAM_URL, 
   DEVELOPER_WHATSAPP_NUMBER, 
@@ -21,6 +23,8 @@ import Stars from './components/Stars';
 import InfoIcon from './components/icons/InfoIcon';
 import WhatsappIcon from './components/icons/WhatsappIcon';
 import InstagramIcon from './components/icons/InstagramIcon';
+import YoutubeIcon from './components/icons/YoutubeIcon';
+import TikTokIcon from './components/icons/TikTokIcon';
 import SparklesIcon from './components/icons/SparklesIcon';
 import RadioIcon from './components/icons/RadioIcon';
 import PlayIcon from './components/icons/PlayIcon';
@@ -436,6 +440,37 @@ const App: React.FC = () => {
             </a>
           </div>
         );
+    case 'tiktok':
+        return (
+            <div className="text-center space-y-4">
+                <div className="flex justify-center">
+                    <div className="relative">
+                        <TikTokIcon className="w-16 h-16 text-pink-500" />
+                        <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span>
+                        </span>
+                    </div>
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent">
+                    TikTok Ao Vivo
+                </h3>
+                <p className="text-slate-300 text-lg">
+                    Estamos ao vivo no TikTok! 🎥
+                </p>
+                <p className="text-slate-400 text-sm bg-slate-800/50 p-3 rounded-lg border border-purple-500/20">
+                    ⚠️ <strong>Aviso:</strong> No horário do programa, estaremos ao vivo neste perfil temporariamente até que o TikTok oficial do programa libere as lives.
+                </p>
+                <a
+                    href={TIKTOK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-black hover:bg-slate-900 border border-slate-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
+                >
+                    <TikTokIcon /> Ir para a Live (@joydealmeida)
+                </a>
+            </div>
+        );
       case 'developerInfo':
          return (
           <div className="text-center">
@@ -460,6 +495,26 @@ const App: React.FC = () => {
                     <WhatsappIcon /> Enviar para Desenvolvedor
                 </button>
             </form>
+        );
+    case 'construction':
+        return (
+            <div className="text-center space-y-6">
+                <div className="flex justify-center">
+                   <div className="relative">
+                       <ShoppingCartIcon className="w-20 h-20 text-purple-400 opacity-80" />
+                       <span className="absolute -top-2 -right-2 text-4xl animate-bounce">🚧</span>
+                   </div>
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent">
+                    Em Construção
+                </h3>
+                <p className="text-slate-300 text-lg">
+                    Estamos construindo uma loja de outro mundo para você! 🚀🛍️
+                </p>
+                <p className="text-slate-400 text-sm">
+                    Aguarde novidades em breve. Nossos alienígenas estão trabalhando duro nisso.
+                </p>
+            </div>
         );
       default: return null;
     }
@@ -526,10 +581,12 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="w-full max-w-sm space-y-3 mt-4">
-                  <LinkAnchor icon={<ShoppingCartIcon />} text="Loja Intergaláctica" href={SHOP_URL} />
+                  <LinkAnchor icon={<YoutubeIcon />} text="Canal do Youtube" href={YOUTUBE_URL} />
+                  <LinkButton icon={<TikTokIcon />} text="TikTok Ao Vivo" onClick={() => openModal('tiktok')} />
                   <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
                   <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
                   <LinkButton icon={<MegaphoneIcon />} text="Anunciar no Labirinto" onClick={() => openModal('advertise')} />
+                  <LinkButton icon={<ShoppingCartIcon />} text="Loja Intergaláctica" onClick={() => openModal('construction')} />
                   
                   <div className="flex justify-around items-center pt-2 gap-4">
                       <div className="group relative">
@@ -932,8 +989,10 @@ const MODAL_TITLES = {
     requestRockInvadersPlayerName: 'Assine o Contrato, Rockstar!',
     rockInvadersGame: 'Rock Invaders',
     instagram: 'Siga-nos no Instagram',
+    tiktok: 'TikTok Ao Vivo',
     developerInfo: 'Créditos',
-    developerContact: 'Contato para Desenvolvimento'
+    developerContact: 'Contato para Desenvolvimento',
+    construction: 'Em Construção'
 };
 
 export default App;

@@ -1,4 +1,5 @@
 
+
 export const SUBTITLES: string[] = [
   "Onde o rock, a tecnologia e o universo colidem.",
   "Sua dose semanal de cultura pop e alternativa.",
@@ -14,6 +15,7 @@ export const SONG_REQUEST_WHATSAPP_NUMBER = "5542998709704";
 export const INSTAGRAM_URL = "https://www.instagram.com/labirintoacustico/";
 export const YOUTUBE_URL = "https://www.youtube.com/@LabirintoAcustico";
 export const TIKTOK_URL = "https://www.tiktok.com/@joydealmeida";
+export const OFFICIAL_TIKTOK_URL = "https://www.tiktok.com/@labirintoacustico";
 export const RADIO_URL = "https://portalclube941.com.br/radio-clube-pontagrossense-941/";
 export const RADIO_STREAM_URL = "https://stm1.voxplayer.com.br:7086/stream";
 export const DEVELOPER_WHATSAPP_NUMBER = "5541988710303";

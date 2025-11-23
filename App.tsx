@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef } from 'react';
 
 // Import constants and types
@@ -9,6 +10,7 @@ import {
   INSTAGRAM_URL,
   YOUTUBE_URL,
   TIKTOK_URL,
+  OFFICIAL_TIKTOK_URL,
   RADIO_URL, 
   RADIO_STREAM_URL, 
   DEVELOPER_WHATSAPP_NUMBER, 
@@ -442,33 +444,53 @@ const App: React.FC = () => {
         );
     case 'tiktok':
         return (
-            <div className="text-center space-y-4">
-                <div className="flex justify-center">
-                    <div className="relative">
-                        <TikTokIcon className="w-16 h-16 text-pink-500" />
-                        <span className="absolute -top-1 -right-1 flex h-4 w-4">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span>
-                        </span>
-                    </div>
+            <div className="text-center space-y-6">
+                {/* Live Section */}
+                <div className={`bg-slate-800/50 p-4 rounded-xl border ${isLive ? 'border-green-500/30' : 'border-slate-600/50'} relative overflow-hidden`}>
+                     {isLive && (
+                        <div className="absolute top-0 right-0 p-2">
+                            <span className="flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                        </div>
+                     )}
+                    <h3 className={`text-xl font-bold ${isLive ? 'text-green-400' : 'text-slate-300'} mb-2 flex items-center justify-center gap-2`}>
+                        {isLive && <LiveIcon className="w-5 h-5" />} 
+                        {isLive ? 'AO VIVO AGORA' : 'Canal de Lives (Temporário)'}
+                    </h3>
+                    <p className="text-slate-300 text-sm mb-4">
+                        {isLive 
+                            ? "No horário do programa, estamos transmitindo ao vivo temporariamente pelo perfil da Joy." 
+                            : "De segunda a quinta, às 22h, as lives ocorrem temporariamente neste perfil."}
+                    </p>
+                    <a
+                        href={TIKTOK_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-full ${isLive ? 'bg-green-600 hover:bg-green-700' : 'bg-slate-700 hover:bg-slate-600'} transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-sm`}
+                    >
+                        <TikTokIcon className="w-4 h-4" /> {isLive ? 'Acessar Live (@joydealmeida)' : 'Acessar Perfil (@joydealmeida)'}
+                    </a>
                 </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent">
-                    TikTok Ao Vivo
-                </h3>
-                <p className="text-slate-300 text-lg">
-                    Estamos ao vivo no TikTok! 🎥
-                </p>
-                <p className="text-slate-400 text-sm bg-slate-800/50 p-3 rounded-lg border border-purple-500/20">
-                    ⚠️ <strong>Aviso:</strong> No horário do programa, estaremos ao vivo neste perfil temporariamente até que o TikTok oficial do programa libere as lives.
-                </p>
-                <a
-                    href={TIKTOK_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-black hover:bg-slate-900 border border-slate-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
-                >
-                    <TikTokIcon /> Ir para a Live (@joydealmeida)
-                </a>
+
+                {/* Official Section */}
+                <div className="bg-slate-800/50 p-4 rounded-xl border border-purple-500/30">
+                    <h3 className="text-xl font-bold text-purple-400 mb-2 flex items-center justify-center gap-2">
+                        <TikTokIcon className="w-5 h-5" /> Perfil Oficial
+                    </h3>
+                    <p className="text-slate-300 text-sm mb-4">
+                        Este é o perfil principal! Siga-nos para nos ajudar a liberar as lives por lá também. 🚀
+                    </p>
+                    <a
+                        href={OFFICIAL_TIKTOK_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-slate-700 hover:bg-slate-600 border border-slate-600 transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-sm"
+                    >
+                        Seguir @labirintoacustico
+                    </a>
+                </div>
             </div>
         );
       case 'developerInfo':
@@ -582,7 +604,7 @@ const App: React.FC = () => {
 
                 <div className="w-full max-w-sm space-y-3 mt-4">
                   <LinkAnchor icon={<YoutubeIcon />} text="Canal do Youtube" href={YOUTUBE_URL} />
-                  <LinkButton icon={<TikTokIcon />} text="TikTok Ao Vivo" onClick={() => openModal('tiktok')} />
+                  <LinkButton icon={<TikTokIcon />} text="Canais TikTok" onClick={() => openModal('tiktok')} />
                   <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
                   <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
                   <LinkButton icon={<MegaphoneIcon />} text="Anunciar no Labirinto" onClick={() => openModal('advertise')} />
@@ -989,7 +1011,7 @@ const MODAL_TITLES = {
     requestRockInvadersPlayerName: 'Assine o Contrato, Rockstar!',
     rockInvadersGame: 'Rock Invaders',
     instagram: 'Siga-nos no Instagram',
-    tiktok: 'TikTok Ao Vivo',
+    tiktok: 'Canais TikTok',
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento',
     construction: 'Em Construção'

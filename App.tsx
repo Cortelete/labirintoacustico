@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect, useRef } from 'react';
 
 // Import constants and types
@@ -180,10 +179,16 @@ const App: React.FC = () => {
     const animationFrame = requestAnimationFrame(animateSpin);
     return () => cancelAnimationFrame(animationFrame);
   }, [spinVelocity, rotation]);
-
+  
   const handleLogoClick = () => {
       const impulse = 20 + Math.random() * 15; // Add a random force
       setSpinVelocity(prev => prev + impulse);
+      
+      // Open modal during the animation (reduced delay for smoother transition)
+      // 300ms allows the spin to start visually but feels like the modal is "thrown" out of the spin
+      setTimeout(() => {
+          openModal('about');
+      }, 300);
   };
   
   const openModal = (type: ModalType) => setActiveModal(type);
@@ -311,7 +316,7 @@ const App: React.FC = () => {
                 <input type="text" placeholder="Nome da Empresa" value={advertiseCompany} onChange={e => setAdvertiseCompany(e.target.value)} required className="input-field" />
                 <label className="flex items-center gap-3 cursor-pointer text-sm text-slate-300 p-2 rounded-md hover:bg-slate-800/50 transition-colors">
                     <input type="checkbox" checked={hasReadyAd} onChange={e => setHasReadyAd(e.target.checked)} className="checkbox-input" />
-                    Já tenho minha propaganda pronta
+                    Já tenho a propaganda pronta
                 </label>
                 {hasReadyAd && (
                     <textarea placeholder="Cole o texto da sua propaganda aqui" value={adCopy} onChange={e => setAdCopy(e.target.value)} className="input-field min-h-[100px]"></textarea>
@@ -574,10 +579,12 @@ const App: React.FC = () => {
                   Labirinto Acústico
                 </h1>
                 
-                <p className="mt-4 text-slate-300 h-12 text-sm sm:text-base transition-opacity duration-500">
-                  {SUBTITLES[subtitleIndex]}
-                </p>
-                <p className="mt-10 text-base sm:text-lg font-semibold text-green-400">
+                <div className="mt-4 min-h-[3.5rem] flex items-center justify-center px-2">
+                  <p className="text-slate-300 text-sm sm:text-base transition-opacity duration-500">
+                    {SUBTITLES[subtitleIndex]}
+                  </p>
+                </div>
+                <p className="mt-2 text-base sm:text-lg font-semibold text-green-400">
                   ⏰ Segunda à Quinta às 22:00
                 </p>
                 {isLive && (
@@ -603,8 +610,20 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="w-full max-w-sm space-y-3 mt-4">
-                  <LinkAnchor icon={<YoutubeIcon />} text="Canal do Youtube" href={YOUTUBE_URL} />
-                  <LinkButton icon={<TikTokIcon />} text="Canais TikTok" onClick={() => openModal('tiktok')} />
+                  <div className="flex gap-3 w-full">
+                      <LinkAnchor 
+                          icon={<YoutubeIcon />} 
+                          text="Youtube" 
+                          href={YOUTUBE_URL} 
+                          className="flex-1"
+                      />
+                      <LinkButton 
+                          icon={<TikTokIcon />} 
+                          text="TikTok" 
+                          onClick={() => openModal('tiktok')} 
+                          className="flex-1"
+                      />
+                  </div>
                   <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
                   <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
                   <LinkButton icon={<MegaphoneIcon />} text="Anunciar no Labirinto" onClick={() => openModal('advertise')} />
@@ -656,7 +675,12 @@ const App: React.FC = () => {
                 </button>
             </footer>
         </div>
-        <Modal isOpen={activeModal !== null} onClose={closeModal} title={MODAL_TITLES[activeModal as keyof typeof MODAL_TITLES]}>
+        <Modal 
+            isOpen={activeModal !== null} 
+            onClose={closeModal} 
+            title={MODAL_TITLES[activeModal as keyof typeof MODAL_TITLES]}
+            variant={activeModal === 'about' ? 'spin' : 'default'}
+        >
             {renderModalContent()}
         </Modal>
       </div>

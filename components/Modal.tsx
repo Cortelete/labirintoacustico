@@ -1,3 +1,4 @@
+
 import React, { Fragment } from 'react';
 import CloseIcon from './icons/CloseIcon';
 
@@ -6,10 +7,13 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   title?: string;
+  variant?: 'default' | 'spin'; // Nova propriedade para controlar a animação
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, variant = 'default' }) => {
   if (!isOpen) return null;
+
+  const animationClass = variant === 'spin' ? 'animate-spin-entry' : 'animate-scale-in';
 
   return (
     <div
@@ -17,9 +21,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       onClick={onClose}
     >
       <div
-        className="relative bg-slate-900/80 backdrop-blur-sm border border-purple-500/30 rounded-2xl shadow-2xl shadow-purple-500/20 w-full max-w-md m-auto p-6 md:p-8 text-white transition-transform duration-300 scale-95 animate-scale-in max-h-[85vh] overflow-y-auto"
+        className={`relative bg-slate-900/80 backdrop-blur-sm border border-purple-500/30 rounded-2xl shadow-2xl shadow-purple-500/20 w-full max-w-md m-auto p-6 md:p-8 text-white transition-transform duration-300 max-h-[85vh] overflow-y-auto ${animationClass}`}
         onClick={(e) => e.stopPropagation()}
-        style={{ animation: 'scale-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' }}
       >
         <button
           onClick={onClose}
@@ -42,6 +45,23 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
         }
         .animate-scale-in {
           animation: scale-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Nova animação elegante para o giro */
+        @keyframes spin-entry {
+          0% { 
+            opacity: 0; 
+            transform: perspective(1000px) scale(0.1) rotateY(180deg); 
+          }
+          100% { 
+            opacity: 1; 
+            transform: perspective(1000px) scale(1) rotateY(0deg); 
+          }
+        }
+        .animate-spin-entry {
+          /* Duração mais longa e curva suave para elegância */
+          animation: spin-entry 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          transform-origin: center center;
         }
       `}</style>
     </div>

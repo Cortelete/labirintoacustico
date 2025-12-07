@@ -21,6 +21,7 @@ import { ModalType } from './types';
 // Import components and icons
 import Modal from './components/Modal';
 import Stars from './components/Stars';
+import GuideBubble from './components/GuideBubble';
 import InfoIcon from './components/icons/InfoIcon';
 import WhatsappIcon from './components/icons/WhatsappIcon';
 import InstagramIcon from './components/icons/InstagramIcon';
@@ -49,6 +50,7 @@ const App: React.FC = () => {
   const [spinVelocity, setSpinVelocity] = useState(0);
   const [isLive, setIsLive] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -63,6 +65,7 @@ const App: React.FC = () => {
   const [songRequestVersion, setSongRequestVersion] = useState('');
   const [songRequestArtist, setSongRequestArtist] = useState('');
   const [songRequestMessage, setSongRequestMessage] = useState('');
+  const [isJustMessage, setIsJustMessage] = useState(false);
 
   // Advertiser Form State
   const [advertiseName, setAdvertiseName] = useState('');
@@ -86,6 +89,25 @@ const App: React.FC = () => {
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+
+  // Check for first visit OR mobile to show guide
+  useEffect(() => {
+    const hasSeenGuide = localStorage.getItem('labirinto_guide_seen');
+    const isMobile = window.innerWidth < 768; // Check if device is likely mobile
+
+    if (isMobile || !hasSeenGuide) {
+        // Show after a small delay to not overwhelm immediately
+        const timer = setTimeout(() => {
+            setShowGuide(true);
+        }, 1500);
+        return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleCloseGuide = () => {
+      setShowGuide(false);
+      localStorage.setItem('labirinto_guide_seen', 'true');
+  };
 
   // Prevent background scroll when modal is open
   useEffect(() => {
@@ -192,7 +214,10 @@ const App: React.FC = () => {
   };
   
   const openModal = (type: ModalType) => setActiveModal(type);
-  const closeModal = () => setActiveModal(null);
+  const closeModal = () => {
+      setActiveModal(null);
+      // Reset sensitive forms on close if needed, but keeping state allows resuming
+  };
   
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,10 +229,17 @@ const App: React.FC = () => {
 
   const handleSongRequestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    let message = `Pedido de Música!\n\nNome do Ouvinte: ${songRequestName}\nMúsica: ${songRequestTitle}\nBanda/Artista: ${songRequestArtist}\nVersão: ${songRequestVersion || 'Qualquer uma'}`;
-    if (songRequestMessage) {
-      message += `\n\nMensagem: ${songRequestMessage}`;
+    let message = "";
+    
+    if (isJustMessage) {
+        message = `Mensagem para o Labirinto!\n\nNome do Ouvinte: ${songRequestName}\n\nMensagem: ${songRequestMessage}`;
+    } else {
+        message = `Pedido de Música!\n\nNome do Ouvinte: ${songRequestName}\nMúsica: ${songRequestTitle}\nBanda/Artista: ${songRequestArtist}\nVersão: ${songRequestVersion || 'Qualquer uma'}`;
+        if (songRequestMessage) {
+            message += `\n\nMensagem: ${songRequestMessage}`;
+        }
     }
+    
     const whatsappUrl = `https://wa.me/${SONG_REQUEST_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     
@@ -216,6 +248,7 @@ const App: React.FC = () => {
     setSongRequestArtist('');
     setSongRequestVersion('');
     setSongRequestMessage('');
+    setIsJustMessage(false);
 
     closeModal();
   };
@@ -299,13 +332,31 @@ const App: React.FC = () => {
       case 'requestSong':
         return (
             <form onSubmit={handleSongRequestSubmit} className="space-y-4">
+                <label className="flex items-center gap-3 cursor-pointer text-sm text-slate-300 p-2 rounded-md hover:bg-slate-800/50 transition-colors bg-slate-800/20 border border-slate-700/50">
+                    <input type="checkbox" checked={isJustMessage} onChange={e => setIsJustMessage(e.target.checked)} className="checkbox-input" />
+                    Apenas enviar uma mensagem (sem pedir música)
+                </label>
+
                 <input type="text" placeholder="Seu nome" value={songRequestName} onChange={e => setSongRequestName(e.target.value)} required className="input-field" />
-                <input type="text" placeholder="Nome da música" value={songRequestTitle} onChange={e => setSongRequestTitle(e.target.value)} required className="input-field" />
-                <input type="text" placeholder="Banda/Cantor" value={songRequestArtist} onChange={e => setSongRequestArtist(e.target.value)} required className="input-field" />
-                <input type="text" placeholder="Versão (ex: ao vivo, acústico)" value={songRequestVersion} onChange={e => setSongRequestVersion(e.target.value)} className="input-field" />
-                <textarea placeholder="Sua mensagem (opcional)" value={songRequestMessage} onChange={e => setSongRequestMessage(e.target.value)} className="input-field min-h-[80px]"></textarea>
+                
+                {!isJustMessage && (
+                    <>
+                        <input type="text" placeholder="Nome da música" value={songRequestTitle} onChange={e => setSongRequestTitle(e.target.value)} required className="input-field" />
+                        <input type="text" placeholder="Banda/Cantor" value={songRequestArtist} onChange={e => setSongRequestArtist(e.target.value)} required className="input-field" />
+                        <input type="text" placeholder="Versão (ex: ao vivo, acústico) (opcional)" value={songRequestVersion} onChange={e => setSongRequestVersion(e.target.value)} className="input-field" />
+                    </>
+                )}
+                
+                <textarea 
+                    placeholder={isJustMessage ? "Sua mensagem (obrigatório)" : "Sua mensagem (opcional)"} 
+                    value={songRequestMessage} 
+                    onChange={e => setSongRequestMessage(e.target.value)} 
+                    className="input-field min-h-[80px]"
+                    required={isJustMessage}
+                ></textarea>
+
                 <button type="submit" className="w-full bg-green-500 hover:bg-green-600 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2">
-                    <WhatsappIcon /> Enviar Pedido
+                    <WhatsappIcon /> {isJustMessage ? 'Enviar Mensagem' : 'Enviar Pedido'}
                 </button>
             </form>
         );
@@ -558,6 +609,7 @@ const App: React.FC = () => {
           <span className="subliminal-text" style={{ top: '65%', left: '5%', animationDelay: '6s' }}>OUÇA O SINAL</span>
         </div>
         <Stars />
+        {showGuide && <GuideBubble onClose={handleCloseGuide} />}
         <audio ref={audioRef} src={RADIO_STREAM_URL} preload="none" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}></audio>
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
             <main className="w-full max-w-lg mx-auto bg-slate-900/60 backdrop-blur-xl border border-purple-500/20 rounded-3xl shadow-2xl shadow-purple-900/40 p-6 sm:p-8 text-center flex flex-col items-center">

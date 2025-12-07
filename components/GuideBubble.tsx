@@ -20,7 +20,7 @@ const GuideBubble: React.FC<GuideBubbleProps> = ({ onClose }) => {
                     <span className="font-bold text-green-400 text-base">Chegou aqui pelo Instagram?</span>
                 </p>
                 <p className="text-slate-300 text-xs mb-3 leading-relaxed relative z-10">
-                    Então clique nesses <strong>três risquinhos acima</strong> e selecione <span className="text-white font-semibold">"Abrir no navegador externo"</span>.
+                    Então clique nesses <strong>três pontinhos acima</strong> e selecione <span className="text-white font-semibold">"Abrir no navegador externo"</span>.
                 </p>
                 <p className="text-slate-400 text-[11px] mb-4 leading-relaxed relative z-10 border-l-2 border-purple-500 pl-2">
                     Isso garante uma melhor experiência, onde a rádio não é pausada ao ser minimizada, e você pode utilizar seu celular enquanto escuta a gente!

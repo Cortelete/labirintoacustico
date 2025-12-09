@@ -1,2 +1,2 @@
 
-export type ModalType = 'about' | 'contact' | 'instagram' | 'tiktok' | 'developerInfo' | 'developerContact' | 'requestSong' | 'advertise' | 'games' | 'requestPlayerName' | 'cosmicSnakeGame' | 'requestBomberAlienPlayerName' | 'bomberAlienGame' | 'requestRockInvadersPlayerName' | 'rockInvadersGame' | 'construction' | null;
+export type ModalType = 'about' | 'contact' | 'instagram' | 'tiktok' | 'developerInfo' | 'developerContact' | 'requestSong' | 'advertise' | 'games' | 'requestPlayerName' | 'cosmicSnakeGame' | 'requestBomberAlienPlayerName' | 'bomberAlienGame' | 'requestRockInvadersPlayerName' | 'rockInvadersGame' | 'requestCosmicRiffPlayerName' | 'cosmicRiffGame' | 'construction' | null;

@@ -38,9 +38,11 @@ import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
 import GamesIcon from './components/icons/GamesIcon';
 import BombIcon from './components/icons/BombIcon';
 import GuitarIcon from './components/icons/GuitarIcon';
+import RhythmIcon from './components/icons/RhythmIcon';
 import CosmicSnakeGame from './components/games/CosmicSnakeGame';
 import BomberAlienGame from './components/games/BomberAlien';
 import RockInvadersGame from './components/games/RockInvadersGame';
+import CosmicRiffGame from './components/games/CosmicRiffGame';
 
 
 const App: React.FC = () => {
@@ -80,6 +82,7 @@ const App: React.FC = () => {
   const [snakePlayerName, setSnakePlayerName] = useState('');
   const [bomberAlienPlayerName, setBomberAlienPlayerName] = useState('');
   const [rockInvadersPlayerName, setRockInvadersPlayerName] = useState('');
+  const [cosmicRiffPlayerName, setCosmicRiffPlayerName] = useState('');
 
 
   // Subtitle cycling effect
@@ -408,6 +411,12 @@ const App: React.FC = () => {
                     >
                         <GuitarIcon className="w-5 h-5" /> Jogar Rock Invaders
                     </button>
+                    <button
+                        onClick={() => openModal('requestCosmicRiffPlayerName')}
+                        className="w-full bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
+                    >
+                        <RhythmIcon className="w-5 h-5" /> Jogar Cosmic Riff
+                    </button>
               </div>
           </div>
         );
@@ -486,6 +495,33 @@ const App: React.FC = () => {
         return (
             <RockInvadersGame
                 playerName={rockInvadersPlayerName || 'Astro do Rock'}
+                onClose={closeModal}
+            />
+        );
+    case 'requestCosmicRiffPlayerName':
+        return (
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                openModal('cosmicRiffGame');
+            }} className="space-y-4 text-center">
+                <p className="text-slate-300">Qual será seu nome artístico no palco?</p>
+                <input
+                    type="text"
+                    placeholder="Seu nome"
+                    value={cosmicRiffPlayerName}
+                    onChange={e => setCosmicRiffPlayerName(e.target.value)}
+                    required
+                    className="input-field"
+                />
+                <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                    Começar o Show
+                </button>
+            </form>
+        );
+    case 'cosmicRiffGame':
+        return (
+            <CosmicRiffGame
+                playerName={cosmicRiffPlayerName || 'Guitar Hero'}
                 onClose={closeModal}
             />
         );
@@ -1086,6 +1122,8 @@ const MODAL_TITLES = {
     bomberAlienGame: 'Bomber Alien',
     requestRockInvadersPlayerName: 'Assine o Contrato, Rockstar!',
     rockInvadersGame: 'Rock Invaders',
+    requestCosmicRiffPlayerName: 'Nome Artístico',
+    cosmicRiffGame: 'Cosmic Riff',
     instagram: 'Siga-nos no Instagram',
     tiktok: 'Canais TikTok',
     developerInfo: 'Créditos',

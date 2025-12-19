@@ -39,6 +39,7 @@ import GamesIcon from './components/icons/GamesIcon';
 import BombIcon from './components/icons/BombIcon';
 import GuitarIcon from './components/icons/GuitarIcon';
 import RhythmIcon from './components/icons/RhythmIcon';
+import VolumeIcon from './components/icons/VolumeIcon';
 import CosmicSnakeGame from './components/games/CosmicSnakeGame';
 import BomberAlienGame from './components/games/BomberAlien';
 import RockInvadersGame from './components/games/RockInvadersGame';
@@ -53,6 +54,8 @@ const App: React.FC = () => {
   const [isLive, setIsLive] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
+  const [volume, setVolume] = useState(0.8);
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -92,6 +95,13 @@ const App: React.FC = () => {
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+
+  // Sync volume with audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   // Check for first visit OR mobile to show guide
   useEffect(() => {
@@ -681,12 +691,40 @@ const App: React.FC = () => {
                     </p>
                 )}
 
-                <div className="w-full max-w-sm bg-slate-800/40 border border-purple-500/20 rounded-xl p-3 sm:p-4 mt-2 flex items-center justify-between shadow-lg">
+                <div className="w-full max-w-sm bg-slate-800/40 border border-purple-500/20 rounded-xl p-3 sm:p-4 mt-2 flex items-center justify-between shadow-lg relative">
                     <div className="text-left">
                         <h3 className="font-bold text-sm sm:text-base text-white">Rádio Clube 94.1 FM</h3>
                         <p className="text-xs text-slate-400">Clique para ouvir</p>
                     </div>
                     <div className="flex items-center gap-2">
+                        {/* Volume Control */}
+                        <div 
+                          className="relative flex items-center group"
+                          onMouseEnter={() => setShowVolumeSlider(true)}
+                          onMouseLeave={() => setShowVolumeSlider(false)}
+                        >
+                          <button 
+                            className="text-slate-400 hover:text-white transition-colors p-1"
+                            onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+                          >
+                            <VolumeIcon level={volume} />
+                          </button>
+                          
+                          {showVolumeSlider && (
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 bg-slate-900 border border-purple-500/30 rounded-lg shadow-xl animate-fade-in">
+                              <input 
+                                type="range" 
+                                min="0" 
+                                max="1" 
+                                step="0.05" 
+                                value={volume} 
+                                onChange={(e) => setVolume(parseFloat(e.target.value))}
+                                className="w-24 accent-purple-500 cursor-pointer h-1.5 bg-slate-700 rounded-lg appearance-none"
+                              />
+                            </div>
+                          )}
+                        </div>
+
                         <button onClick={syncLive} className="flex items-center gap-1.5 text-xs font-semibold bg-red-600/80 text-white px-2 py-1.5 sm:px-2.5 rounded-md hover:bg-red-600 transition-colors">
                             <LiveIcon className="w-2 h-2 animate-pulse" />
                             AO VIVO
@@ -1090,6 +1128,34 @@ const App: React.FC = () => {
             .subliminal-text {
                 font-size: 4rem;
             }
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; transform: translate(-50%, 10px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.2s ease-out forwards;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 14px;
+          height: 14px;
+          background: #a855f7;
+          cursor: pointer;
+          border-radius: 50%;
+          border: 2px solid white;
+        }
+
+        input[type=range]::-moz-range-thumb {
+          width: 14px;
+          height: 14px;
+          background: #a855f7;
+          cursor: pointer;
+          border-radius: 50%;
+          border: 2px solid white;
         }
       `}</style>
     </>

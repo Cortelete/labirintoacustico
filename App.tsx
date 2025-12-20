@@ -58,6 +58,7 @@ const App: React.FC = () => {
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
+  const volumeTimerRef = useRef<number | null>(null);
 
   // Contact Form State
   const [contactName, setContactName] = useState('');
@@ -121,6 +122,32 @@ const App: React.FC = () => {
       setShowGuide(false);
       localStorage.setItem('labirinto_guide_seen', 'true');
   };
+
+  // Volume slider hide timer
+  const startVolumeTimer = () => {
+    if (volumeTimerRef.current) {
+      window.clearTimeout(volumeTimerRef.current);
+    }
+    volumeTimerRef.current = window.setTimeout(() => {
+      setShowVolumeSlider(false);
+    }, 2000);
+  };
+
+  const handleVolumeIconClick = () => {
+    setShowVolumeSlider(true);
+    startVolumeTimer();
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVolume(parseFloat(e.target.value));
+    startVolumeTimer();
+  };
+
+  useEffect(() => {
+    return () => {
+      if (volumeTimerRef.current) window.clearTimeout(volumeTimerRef.current);
+    };
+  }, []);
 
   // Prevent background scroll when modal is open
   useEffect(() => {
@@ -698,14 +725,10 @@ const App: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-2">
                         {/* Volume Control */}
-                        <div 
-                          className="relative flex items-center group"
-                          onMouseEnter={() => setShowVolumeSlider(true)}
-                          onMouseLeave={() => setShowVolumeSlider(false)}
-                        >
+                        <div className="relative flex items-center">
                           <button 
                             className="text-slate-400 hover:text-white transition-colors p-1"
-                            onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+                            onClick={handleVolumeIconClick}
                           >
                             <VolumeIcon level={volume} />
                           </button>
@@ -718,7 +741,8 @@ const App: React.FC = () => {
                                 max="1" 
                                 step="0.05" 
                                 value={volume} 
-                                onChange={(e) => setVolume(parseFloat(e.target.value))}
+                                onChange={handleVolumeChange}
+                                onInput={startVolumeTimer}
                                 className="w-24 accent-purple-500 cursor-pointer h-1.5 bg-slate-700 rounded-lg appearance-none"
                               />
                             </div>

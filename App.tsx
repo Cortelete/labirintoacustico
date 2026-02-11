@@ -571,11 +571,11 @@ const App: React.FC = () => {
             </a>
           </div>
         );
-    case 'tiktok':
+      case 'tiktok':
         return (
             <div className="text-center space-y-6">
-                {/* Live Section */}
-                <div className={`bg-slate-800/50 p-4 rounded-xl border ${isLive ? 'border-green-500/30' : 'border-slate-600/50'} relative overflow-hidden`}>
+                {/* Official Live Section */}
+                <div className={`bg-slate-800/50 p-4 rounded-xl border ${isLive ? 'border-green-500/30' : 'border-purple-500/30'} relative overflow-hidden`}>
                      {isLive && (
                         <div className="absolute top-0 right-0 p-2">
                             <span className="flex h-3 w-3">
@@ -586,38 +586,35 @@ const App: React.FC = () => {
                      )}
                     <h3 className={`text-xl font-bold ${isLive ? 'text-green-400' : 'text-slate-300'} mb-2 flex items-center justify-center gap-2`}>
                         {isLive && <LiveIcon className="w-5 h-5" />} 
-                        {isLive ? 'AO VIVO AGORA' : 'Canal de Lives (Temporário)'}
+                        {isLive ? 'AO VIVO AGORA' : 'Canal Oficial de Lives'}
                     </h3>
                     <p className="text-slate-300 text-sm mb-4">
                         {isLive 
-                            ? "No horário do programa, estamos transmitindo ao vivo temporariamente pelo perfil da Joy." 
-                            : "De segunda a quinta, às 22h, as lives ocorrem temporariamente neste perfil."}
-                    </p>
-                    <a
-                        href={TIKTOK_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`w-full ${isLive ? 'bg-green-600 hover:bg-green-700' : 'bg-slate-700 hover:bg-slate-600'} transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-sm`}
-                    >
-                        <TikTokIcon className="w-4 h-4" /> {isLive ? 'Acessar Live (@joydealmeida)' : 'Acessar Perfil (@joydealmeida)'}
-                    </a>
-                </div>
-
-                {/* Official Section */}
-                <div className="bg-slate-800/50 p-4 rounded-xl border border-purple-500/30">
-                    <h3 className="text-xl font-bold text-purple-400 mb-2 flex items-center justify-center gap-2">
-                        <TikTokIcon className="w-5 h-5" /> Perfil Oficial
-                    </h3>
-                    <p className="text-slate-300 text-sm mb-4">
-                        Este é o perfil principal! Siga-nos para nos ajudar a liberar as lives por lá também. 🚀
+                            ? "Estamos transmitindo ao vivo pelo nosso perfil oficial! 🚀" 
+                            : "De segunda a quinta, às 22h, as lives acontecem aqui."}
                     </p>
                     <a
                         href={OFFICIAL_TIKTOK_URL}
                         target="_blank"
                         rel="noopener noreferrer"
+                        className={`w-full ${isLive ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700'} transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-sm`}
+                    >
+                        <TikTokIcon className="w-4 h-4" /> {isLive ? 'Acessar Live (@labirintoacustico)' : 'Seguir @labirintoacustico'}
+                    </a>
+                </div>
+
+                {/* Secondary Section */}
+                <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-600/50">
+                    <h3 className="text-lg font-bold text-slate-400 mb-2 flex items-center justify-center gap-2">
+                       Siga também
+                    </h3>
+                    <a
+                        href={TIKTOK_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-full bg-slate-700 hover:bg-slate-600 border border-slate-600 transition-colors text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-sm"
                     >
-                        Seguir @labirintoacustico
+                        <TikTokIcon className="w-4 h-4" /> @joydealmeida
                     </a>
                 </div>
             </div>

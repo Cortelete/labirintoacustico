@@ -12,6 +12,7 @@ export const SUBTITLES: string[] = [
 export const WHATSAPP_NUMBER = "5541988710303";
 export const SONG_REQUEST_WHATSAPP_NUMBER = "5542998709704";
 export const INSTAGRAM_URL = "https://www.instagram.com/labirintoacustico/";
+export const TWITCH_URL = "https://www.twitch.tv/labirintoacustico";
 export const YOUTUBE_URL = "https://www.youtube.com/@LabirintoAcustico";
 export const TIKTOK_URL = "https://www.tiktok.com/@joydealmeida";
 export const OFFICIAL_TIKTOK_URL = "https://www.tiktok.com/@labirintoacustico";

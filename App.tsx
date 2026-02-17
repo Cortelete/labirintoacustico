@@ -7,6 +7,7 @@ import {
   WHATSAPP_NUMBER, 
   SONG_REQUEST_WHATSAPP_NUMBER,
   INSTAGRAM_URL,
+  TWITCH_URL,
   YOUTUBE_URL,
   TIKTOK_URL,
   OFFICIAL_TIKTOK_URL,
@@ -25,6 +26,7 @@ import GuideBubble from './components/GuideBubble';
 import InfoIcon from './components/icons/InfoIcon';
 import WhatsappIcon from './components/icons/WhatsappIcon';
 import InstagramIcon from './components/icons/InstagramIcon';
+import TwitchIcon from './components/icons/TwitchIcon';
 import YoutubeIcon from './components/icons/YoutubeIcon';
 import TikTokIcon from './components/icons/TikTokIcon';
 import SparklesIcon from './components/icons/SparklesIcon';
@@ -357,6 +359,37 @@ const App: React.FC = () => {
             </div>
             <p className="font-bold text-base pt-2">O Labirinto Acústico não é só um programa — é um portal pra quem quer pensar, curtir e sentir o som de um jeito diferente. 🚀</p>
           </div>
+        );
+      case 'contactOptions':
+        return (
+            <div className="space-y-4">
+                <p className="text-center text-slate-300 mb-4">Como podemos te ajudar hoje?</p>
+                <button 
+                    onClick={() => openModal('contact')}
+                    className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 transition-colors text-white font-bold py-4 px-6 rounded-xl flex items-center gap-4 group"
+                >
+                    <div className="bg-green-500/20 p-3 rounded-full group-hover:bg-green-500/30 transition-colors">
+                        <WhatsappIcon className="w-6 h-6 text-green-400" />
+                    </div>
+                    <div className="text-left">
+                        <span className="block text-lg">Falar com a Produção</span>
+                        <span className="text-xs text-slate-400">Sugestões, recados e contato geral</span>
+                    </div>
+                </button>
+
+                <button 
+                    onClick={() => openModal('advertise')}
+                    className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 transition-colors text-white font-bold py-4 px-6 rounded-xl flex items-center gap-4 group"
+                >
+                    <div className="bg-purple-500/20 p-3 rounded-full group-hover:bg-purple-500/30 transition-colors">
+                        <MegaphoneIcon className="w-6 h-6 text-purple-400" />
+                    </div>
+                    <div className="text-left">
+                        <span className="block text-lg">Quero Anunciar</span>
+                        <span className="text-xs text-slate-400">Divulgue sua marca no Labirinto</span>
+                    </div>
+                </button>
+            </div>
         );
       case 'contact':
         return (
@@ -758,6 +791,20 @@ const App: React.FC = () => {
 
                 <div className="w-full max-w-sm space-y-3 mt-4">
                   <div className="flex gap-3 w-full">
+                      <LinkButton 
+                          icon={<InstagramIcon />} 
+                          text="Instagram" 
+                          onClick={() => openModal('instagram')} 
+                          className="flex-1"
+                      />
+                      <LinkAnchor 
+                          icon={<TwitchIcon />} 
+                          text="Twitch" 
+                          href={TWITCH_URL} 
+                          className="flex-1"
+                      />
+                  </div>
+                  <div className="flex gap-3 w-full">
                       <LinkAnchor 
                           icon={<YoutubeIcon />} 
                           text="Youtube" 
@@ -773,7 +820,6 @@ const App: React.FC = () => {
                   </div>
                   <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
                   <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
-                  <LinkButton icon={<MegaphoneIcon />} text="Anunciar no Labirinto" onClick={() => openModal('advertise')} />
                   <LinkButton icon={<ShoppingCartIcon />} text="Loja Intergaláctica" onClick={() => openModal('construction')} />
                   
                   <div className="flex justify-around items-center pt-2 gap-4">
@@ -787,15 +833,6 @@ const App: React.FC = () => {
                           <span className="tooltip">Quem somos nós?</span>
                       </div>
                       <div className="group relative">
-                          <LinkButton
-                              icon={<InstagramIcon />}
-                              text="Insta do Labirinto"
-                              onClick={() => openModal('instagram')}
-                              className="icon-only-button"
-                          />
-                          <span className="tooltip">Insta do Labirinto</span>
-                      </div>
-                      <div className="group relative">
                           <LinkAnchor
                               icon={<RadioIcon />}
                               text="Ouça no site da Clube FM"
@@ -807,11 +844,11 @@ const App: React.FC = () => {
                       <div className="group relative">
                           <LinkButton
                               icon={<WhatsappIcon />}
-                              text="Contato com o Labirinto"
-                              onClick={() => openModal('contact')}
+                              text="Contato / Anunciar"
+                              onClick={() => openModal('contactOptions')}
                               className="icon-only-button"
                           />
-                          <span className="tooltip">Contato com o Labirinto</span>
+                          <span className="tooltip">Fale Conosco / Anunciar</span>
                       </div>
                   </div>
                 </div>
@@ -1200,6 +1237,7 @@ const LinkAnchor: React.FC<{icon: React.ReactNode, text: string, href: string, c
 const MODAL_TITLES = {
     about: 'Quem somos nós?',
     contact: 'Fale Conosco',
+    contactOptions: 'Entre em Contato',
     requestSong: 'Peça sua Música',
     advertise: 'Anuncie Conosco',
     games: 'Área de Joguinhos 👾',

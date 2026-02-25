@@ -46,6 +46,7 @@ import CosmicSnakeGame from './components/games/CosmicSnakeGame';
 import BomberAlienGame from './components/games/BomberAlien';
 import RockInvadersGame from './components/games/RockInvadersGame';
 import CosmicRiffGame from './components/games/CosmicRiffGame';
+import IntergalacticStore from './components/shop/IntergalacticStore';
 
 
 const App: React.FC = () => {
@@ -677,25 +678,9 @@ const App: React.FC = () => {
                 </button>
             </form>
         );
-    case 'construction':
+    case 'shop':
         return (
-            <div className="text-center space-y-6">
-                <div className="flex justify-center">
-                   <div className="relative">
-                       <ShoppingCartIcon className="w-20 h-20 text-purple-400 opacity-80" />
-                       <span className="absolute -top-2 -right-2 text-4xl animate-bounce">🚧</span>
-                   </div>
-                </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent">
-                    Em Construção
-                </h3>
-                <p className="text-slate-300 text-lg">
-                    Estamos construindo uma loja de outro mundo para você! 🚀🛍️
-                </p>
-                <p className="text-slate-400 text-sm">
-                    Aguarde novidades em breve. Nossos alienígenas estão trabalhando duro nisso.
-                </p>
-            </div>
+            <IntergalacticStore onClose={closeModal} />
         );
       default: return null;
     }
@@ -820,7 +805,7 @@ const App: React.FC = () => {
                   </div>
                   <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
                   <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
-                  <LinkButton icon={<ShoppingCartIcon />} text="Loja Intergaláctica" onClick={() => openModal('construction')} />
+                  <LinkButton icon={<ShoppingCartIcon />} text="Loja Intergaláctica" onClick={() => openModal('shop')} />
                   
                   <div className="flex justify-around items-center pt-2 gap-4">
                       <div className="group relative">
@@ -1253,6 +1238,7 @@ const MODAL_TITLES = {
     tiktok: 'Canais TikTok',
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento',
+    shop: 'Loja Intergaláctica 🛍️',
     construction: 'Em Construção'
 };
 

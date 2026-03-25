@@ -15,7 +15,8 @@ import {
   RADIO_STREAM_URL, 
   DEVELOPER_WHATSAPP_NUMBER, 
   DEVELOPER_INSTAGRAM_URL,
-  SHOP_URL
+  SHOP_URL,
+  ADVERTISE_URL
 } from './constants';
 import { ModalType } from './types';
 
@@ -829,11 +830,20 @@ const App: React.FC = () => {
                       <div className="group relative">
                           <LinkButton
                               icon={<WhatsappIcon />}
-                              text="Contato / Anunciar"
+                              text="Contato"
                               onClick={() => openModal('contactOptions')}
                               className="icon-only-button"
                           />
-                          <span className="tooltip">Fale Conosco / Anunciar</span>
+                          <span className="tooltip">Fale Conosco</span>
+                      </div>
+                      <div className="group relative">
+                          <LinkAnchor
+                              icon={<MegaphoneIcon />}
+                              text="Anunciar"
+                              href={ADVERTISE_URL}
+                              className="icon-only-button"
+                          />
+                          <span className="tooltip">Anunciar no Labirinto</span>
                       </div>
                   </div>
                 </div>

@@ -21,3 +21,4 @@ export const RADIO_STREAM_URL = "https://stm1.voxplayer.com.br:7086/stream";
 export const DEVELOPER_WHATSAPP_NUMBER = "5541988710303";
 export const DEVELOPER_INSTAGRAM_URL = "https://www.instagram.com/inteligenciarte.ia/";
 export const SHOP_URL = "https://montink.com/labirintoacustico";
+export const ADVERTISE_URL = "https://labirintoanuncio.vercel.app/";

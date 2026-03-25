@@ -31,9 +31,9 @@ const PRODUCTS: Product[] = [
         price: 120.00,
         description: 'Mostre que você faz parte da tripulação! Design exclusivo com o logo clássico do Labirinto Acústico em neon sobre fundo preto profundo. Algodão 100% confortável para viagens longas pelo espaço.',
         images: [
-            'https://placehold.co/400x500/1e1b4b/FFF?text=Fã+Intergalático+Frontal',
-            'https://placehold.co/400x500/1e1b4b/FFF?text=Fã+Intergalático+Costas',
-            'https://placehold.co/400x500/1e1b4b/FFF?text=Detalhe+Logo'
+            '/fan-frontal.png',
+            '/fan-costas.png',
+            '/fan-detalhe.png'
         ],
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     },
@@ -43,9 +43,9 @@ const PRODUCTS: Product[] = [
         price: 120.00,
         description: 'A essência do programa estampada no peito. Tipografia marcante e ondas sonoras que vibram na frequência do rock. Ideal para curtir o programa ao vivo.',
         images: [
-            'https://placehold.co/400x500/312e81/FFF?text=Labirinto+Acústico+Frontal',
-            'https://placehold.co/400x500/312e81/FFF?text=Labirinto+Acústico+Zoom',
-            'https://placehold.co/400x500/312e81/FFF?text=Detalhe+Tecido'
+            '/acoustic-frontal.png',
+            '/acoustic-zoom.png',
+            '/acoustic-tecido.png'
         ],
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     },
@@ -55,9 +55,9 @@ const PRODUCTS: Product[] = [
         price: 120.00,
         description: 'Edição Especial Limitada! Uma homenagem ao nosso mascote cósmico Jack. Estampa full-print com arte psicodélica e cores vibrantes que brilham na luz negra.',
         images: [
-            'https://placehold.co/400x500/4c1d95/FFF?text=Jack+Planet+Art',
-            'https://placehold.co/400x500/4c1d95/FFF?text=Jack+Planet+Costas',
-            'https://placehold.co/400x500/4c1d95/FFF?text=Jack+Planet+Lateral'
+            '/jack-art.png',
+            '/jack-costas.png',
+            '/jack-lateral.png'
         ],
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     }

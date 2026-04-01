@@ -72,10 +72,7 @@ const App: React.FC = () => {
   // Song Request Form State
   const [songRequestName, setSongRequestName] = useState('');
   const [songRequestTitle, setSongRequestTitle] = useState('');
-  const [songRequestVersion, setSongRequestVersion] = useState('');
-  const [songRequestArtist, setSongRequestArtist] = useState('');
   const [songRequestMessage, setSongRequestMessage] = useState('');
-  const [isJustMessage, setIsJustMessage] = useState(false);
 
   // Advertiser Form State
   const [advertiseName, setAdvertiseName] = useState('');
@@ -273,15 +270,10 @@ const App: React.FC = () => {
 
   const handleSongRequestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    let message = "";
     
-    if (isJustMessage) {
-        message = `Mensagem para o Labirinto!\n\nNome do Ouvinte: ${songRequestName}\n\nMensagem: ${songRequestMessage}`;
-    } else {
-        message = `Pedido de Música!\n\nNome do Ouvinte: ${songRequestName}\nMúsica: ${songRequestTitle}\nBanda/Artista: ${songRequestArtist}\nVersão: ${songRequestVersion || 'Qualquer uma'}`;
-        if (songRequestMessage) {
-            message += `\n\nMensagem: ${songRequestMessage}`;
-        }
+    let message = `Pedido de Música!\n\nNome do Ouvinte: ${songRequestName}\nMúsica: ${songRequestTitle}`;
+    if (songRequestMessage) {
+        message += `\n\nMensagem: ${songRequestMessage}`;
     }
     
     const whatsappUrl = `https://wa.me/${SONG_REQUEST_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -289,10 +281,7 @@ const App: React.FC = () => {
     
     setSongRequestName('');
     setSongRequestTitle('');
-    setSongRequestArtist('');
-    setSongRequestVersion('');
     setSongRequestMessage('');
-    setIsJustMessage(false);
 
     closeModal();
   };
@@ -407,31 +396,18 @@ const App: React.FC = () => {
       case 'requestSong':
         return (
             <form onSubmit={handleSongRequestSubmit} className="space-y-4">
-                <label className="flex items-center gap-3 cursor-pointer text-sm text-slate-300 p-2 rounded-md hover:bg-slate-800/50 transition-colors bg-slate-800/20 border border-slate-700/50">
-                    <input type="checkbox" checked={isJustMessage} onChange={e => setIsJustMessage(e.target.checked)} className="checkbox-input" />
-                    Apenas enviar uma mensagem (sem pedir música)
-                </label>
-
                 <input type="text" placeholder="Seu nome" value={songRequestName} onChange={e => setSongRequestName(e.target.value)} required className="input-field" />
-                
-                {!isJustMessage && (
-                    <>
-                        <input type="text" placeholder="Nome da música" value={songRequestTitle} onChange={e => setSongRequestTitle(e.target.value)} required className="input-field" />
-                        <input type="text" placeholder="Banda/Cantor" value={songRequestArtist} onChange={e => setSongRequestArtist(e.target.value)} required className="input-field" />
-                        <input type="text" placeholder="Versão (ex: ao vivo, acústico) (opcional)" value={songRequestVersion} onChange={e => setSongRequestVersion(e.target.value)} className="input-field" />
-                    </>
-                )}
+                <input type="text" placeholder="Nome da música" value={songRequestTitle} onChange={e => setSongRequestTitle(e.target.value)} required className="input-field" />
                 
                 <textarea 
-                    placeholder={isJustMessage ? "Sua mensagem (obrigatório)" : "Sua mensagem (opcional)"} 
+                    placeholder="Sua mensagem (opcional)" 
                     value={songRequestMessage} 
                     onChange={e => setSongRequestMessage(e.target.value)} 
                     className="input-field min-h-[80px]"
-                    required={isJustMessage}
                 ></textarea>
 
                 <button type="submit" className="w-full bg-green-500 hover:bg-green-600 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2">
-                    <WhatsappIcon /> {isJustMessage ? 'Enviar Mensagem' : 'Enviar Pedido'}
+                    <WhatsappIcon /> Enviar Pedido
                 </button>
             </form>
         );
@@ -597,23 +573,6 @@ const App: React.FC = () => {
                 onClose={closeModal}
             />
         );
-      case 'artemis2':
-        return (
-            <div className="flex flex-col items-center space-y-4">
-                <p className="text-slate-300 text-center text-sm">Acompanhe a transmissão oficial da NASA para a missão Artemis II, rumo à Lua! 🌕🚀</p>
-                <div className="w-full aspect-video rounded-xl overflow-hidden border border-slate-700 shadow-lg">
-                    <iframe 
-                        width="100%" 
-                        height="100%" 
-                        src="https://www.youtube.com/embed/m3kR2KK8TEs?autoplay=1" 
-                        title="NASA Live Stream" 
-                        frameBorder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowFullScreen
-                    ></iframe>
-                </div>
-            </div>
-        );
       case 'instagram':
         return (
           <div className="text-center">
@@ -670,6 +629,36 @@ const App: React.FC = () => {
                     </a>
                 </div>
             </div>
+        );
+      case 'twitch':
+        return (
+          <div className="text-center">
+            <p className="mb-6">Acompanhe nossas transmissões ao vivo com muita interação e gameplay!</p>
+            <a 
+                href={TWITCH_URL} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-block bg-[#9146FF] hover:bg-[#a970ff] transition-colors text-white font-bold py-3 px-6 rounded-lg hover:scale-105 transition-transform"
+                onClick={closeModal}
+            >
+                <TwitchIcon className="inline-block w-5 h-5 mr-2" /> Ir para a Twitch
+            </a>
+          </div>
+        );
+      case 'youtube':
+        return (
+          <div className="text-center">
+            <p className="mb-6">Inscreva-se no nosso canal para ver os melhores momentos, cortes e programas completos!</p>
+            <a 
+                href={YOUTUBE_URL} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-block bg-[#FF0000] hover:bg-[#ff4d4d] transition-colors text-white font-bold py-3 px-6 rounded-lg hover:scale-105 transition-transform"
+                onClick={closeModal}
+            >
+                <YoutubeIcon className="inline-block w-5 h-5 mr-2" /> Ir para o YouTube
+            </a>
+          </div>
         );
       case 'developerInfo':
          return (
@@ -792,46 +781,77 @@ const App: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Botão Temporário Artemis 2 */}
-                <button 
-                    onClick={() => openModal('artemis2')} 
-                    className="w-full max-w-sm mt-3 bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold py-2 px-3 text-sm rounded-lg flex items-center justify-center gap-2 border border-blue-400/50 shadow-[0_0_15px_rgba(37,99,235,0.5)] animate-pulse"
-                >
-                    🚀 Assista ao Lançamento da Artemis II (NASA)
-                </button>
-
                 <div className="w-full max-w-sm space-y-2 mt-3">
+                  <button 
+                      onClick={() => openModal('requestSong')} 
+                      className="btn-music w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
+                  >
+                      <div className="btn-music-particles">
+                          <span style={{ left: '15%', animationDelay: '0.3s' }}>🎵</span>
+                          <span style={{ left: '50%', animationDelay: '1.5s' }}>🎸</span>
+                          <span style={{ left: '80%', animationDelay: '0.8s' }}>🎧</span>
+                      </div>
+                      <span className="relative z-10 text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] flex items-center gap-2">
+                          <MusicNoteIcon className="w-5 h-5" /> Pedir Música
+                      </span>
+                  </button>
+
+                  <button 
+                      onClick={() => openModal('games')} 
+                      className="btn-cosmic w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
+                  >
+                      <div className="btn-cosmic-particles">
+                          <span style={{ left: '10%', animationDelay: '0.2s' }}>👾</span>
+                          <span style={{ left: '45%', animationDelay: '1.8s' }}>🛸</span>
+                          <span style={{ left: '75%', animationDelay: '0.5s' }}>🎮</span>
+                      </div>
+                      <span className="relative z-10 text-green-300 drop-shadow-[0_0_5px_rgba(74,222,128,0.8)] flex items-center gap-2">
+                          <GamesIcon className="w-5 h-5" /> Joguinhos
+                      </span>
+                  </button>
+
+                  <button 
+                      onClick={() => openModal('shop')} 
+                      className="btn-shop w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
+                  >
+                      <div className="btn-shop-particles">
+                          <span style={{ left: '15%', animationDelay: '0.1s' }}>🛍️</span>
+                          <span style={{ left: '50%', animationDelay: '1.2s' }}>💎</span>
+                          <span style={{ left: '80%', animationDelay: '0.8s' }}>✨</span>
+                      </div>
+                      <span className="relative z-10 text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.8)] flex items-center gap-2">
+                          <ShoppingCartIcon className="w-5 h-5" /> Loja Intergaláctica
+                      </span>
+                  </button>
+
                   <div className="flex gap-2 w-full">
                       <LinkButton 
                           icon={<InstagramIcon />} 
                           text="Instagram" 
                           onClick={() => openModal('instagram')} 
-                          className="flex-1"
+                          className="flex-1 btn-social"
                       />
-                      <LinkAnchor 
+                      <LinkButton 
                           icon={<TwitchIcon />} 
                           text="Twitch" 
-                          href={TWITCH_URL} 
-                          className="flex-1"
+                          onClick={() => openModal('twitch')} 
+                          className="flex-1 btn-social"
                       />
                   </div>
                   <div className="flex gap-2 w-full">
-                      <LinkAnchor 
+                      <LinkButton 
                           icon={<YoutubeIcon />} 
                           text="Youtube" 
-                          href={YOUTUBE_URL} 
-                          className="flex-1"
+                          onClick={() => openModal('youtube')} 
+                          className="flex-1 btn-social"
                       />
                       <LinkButton 
                           icon={<TikTokIcon />} 
                           text="TikTok" 
                           onClick={() => openModal('tiktok')} 
-                          className="flex-1"
+                          className="flex-1 btn-social"
                       />
                   </div>
-                  <LinkButton icon={<MusicNoteIcon />} text="Pedir Música" onClick={() => openModal('requestSong')} />
-                  <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
-                  <LinkButton icon={<ShoppingCartIcon />} text="Loja Intergaláctica" onClick={() => openModal('shop')} />
                   
                   <div className="flex justify-around items-center pt-1 gap-3">
                       <div className="group relative">
@@ -972,6 +992,23 @@ const App: React.FC = () => {
             border-color: rgba(168, 85, 247, 0.5); /* purple-500 */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
+        .btn-social {
+            background: linear-gradient(45deg, rgba(255,255,255,0.02), rgba(168,85,247,0.1), rgba(255,255,255,0.02));
+            background-size: 200% 200%;
+            animation: social-bg-shift 3s ease infinite alternate;
+        }
+        @keyframes social-bg-shift {
+            0% { 
+                background-position: 0% 50%; 
+                border-color: rgba(168, 85, 247, 0.2);
+                box-shadow: 0 0 5px rgba(168, 85, 247, 0.1);
+            }
+            100% { 
+                background-position: 100% 50%; 
+                border-color: rgba(236, 72, 153, 0.4);
+                box-shadow: 0 0 12px rgba(236, 72, 153, 0.2);
+            }
+        }
         .link-button-style > svg {
             position: absolute;
             left: 1rem;
@@ -993,9 +1030,23 @@ const App: React.FC = () => {
             padding: 0;
             justify-content: center;
             border-radius: 9999px;
+            animation: icon-float 2.5s ease-in-out infinite alternate;
         }
+        .group:nth-child(1) .icon-only-button { animation-delay: 0s; }
+        .group:nth-child(2) .icon-only-button { animation-delay: 0.4s; }
+        .group:nth-child(3) .icon-only-button { animation-delay: 0.8s; }
+        .group:nth-child(4) .icon-only-button { animation-delay: 1.2s; }
+
         .icon-only-button:hover {
-            transform: scale(1.1);
+            transform: scale(1.15) translateY(-4px) !important;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(34, 211, 238, 0.6);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+            animation-play-state: paused;
+        }
+        @keyframes icon-float {
+            0% { transform: translateY(0px); box-shadow: 0 0 0px rgba(255,255,255,0); }
+            100% { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(255,255,255,0.1); }
         }
         .icon-only-button > svg {
             position: static; /* Override absolute positioning */
@@ -1176,6 +1227,114 @@ const App: React.FC = () => {
             }
         }
 
+        /* Cosmic Button Styles */
+        .btn-cosmic {
+            position: relative;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4); /* fundo meio transparente */
+            backdrop-filter: blur(4px);
+            border: 2px solid #a3e635; /* verde limão neon */
+            box-shadow: 0 0 15px rgba(163, 230, 53, 0.5), inset 0 0 10px rgba(163, 230, 53, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-cosmic:hover {
+            box-shadow: 0 0 25px rgba(163, 230, 53, 0.8), inset 0 0 15px rgba(163, 230, 53, 0.4);
+            background: rgba(15, 23, 42, 0.6);
+            transform: scale(1.02);
+        }
+        .btn-cosmic-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+        .btn-cosmic-particles span {
+            position: absolute;
+            bottom: -30px;
+            font-size: 1.5rem;
+            animation: fly-up 3s linear infinite;
+        }
+        @keyframes fly-up {
+            0% { transform: translateY(0) rotate(-45deg) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(-45deg) scale(1.2); opacity: 0; }
+        }
+
+        /* Music Button Styles */
+        .btn-music {
+            position: relative;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            border: 2px solid #22d3ee; /* cyan-400 */
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5), inset 0 0 10px rgba(34, 211, 238, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-music:hover {
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.8), inset 0 0 15px rgba(34, 211, 238, 0.4);
+            background: rgba(15, 23, 42, 0.6);
+            transform: scale(1.02);
+        }
+        .btn-music-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        .btn-music-particles span {
+            position: absolute;
+            bottom: -30px;
+            font-size: 1.5rem;
+            animation: float-up-music 3s ease-in-out infinite;
+        }
+        @keyframes float-up-music {
+            0% { transform: translateY(0) scale(0.8) rotate(-10deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-80px) scale(1.2) rotate(10deg); opacity: 0; }
+        }
+
+        /* Shop Button Styles */
+        .btn-shop {
+            position: relative;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            border: 2px solid #fde047; /* yellow-300 */
+            box-shadow: 0 0 15px rgba(253, 224, 71, 0.5), inset 0 0 10px rgba(253, 224, 71, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-shop:hover {
+            box-shadow: 0 0 25px rgba(253, 224, 71, 0.8), inset 0 0 15px rgba(253, 224, 71, 0.4);
+            background: rgba(15, 23, 42, 0.6);
+            transform: scale(1.02);
+        }
+        .btn-shop-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        .btn-shop-particles span {
+            position: absolute;
+            bottom: -30px;
+            font-size: 1.5rem;
+            animation: float-up 3s ease-in-out infinite;
+        }
+        @keyframes float-up {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-80px) scale(1.2); opacity: 0; }
+        }
+
         /* Responsiveness */
         @media (max-width: 640px) {
             main.max-w-lg {
@@ -1271,10 +1430,11 @@ const MODAL_TITLES = {
     cosmicRiffGame: 'Cosmic Riff',
     instagram: 'Siga-nos no Instagram',
     tiktok: 'Canais TikTok',
+    twitch: 'Canal na Twitch',
+    youtube: 'Canal no YouTube',
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento',
     shop: 'Loja Intergaláctica 🛍️',
-    artemis2: 'Missão Artemis II 🚀',
     construction: 'Em Construção'
 };
 

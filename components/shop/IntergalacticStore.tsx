@@ -25,6 +25,7 @@ interface CartItem {
 
 // --- Data ---
 const PRODUCTS: Product[] = [
+    /* Em produção
     {
         id: 'fan',
         name: 'Camiseta Fã Intergalático',
@@ -37,6 +38,7 @@ const PRODUCTS: Product[] = [
         ],
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     },
+    */
     {
         id: 'acoustic',
         name: 'Camiseta Labirinto Acústico',
@@ -49,6 +51,7 @@ const PRODUCTS: Product[] = [
         ],
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     },
+    /* Em produção
     {
         id: 'jack',
         name: 'Camiseta Jack Planet',
@@ -61,6 +64,7 @@ const PRODUCTS: Product[] = [
         ],
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     }
+    */
 ];
 
 // --- Components ---

@@ -597,6 +597,23 @@ const App: React.FC = () => {
                 onClose={closeModal}
             />
         );
+      case 'artemis2':
+        return (
+            <div className="flex flex-col items-center space-y-4">
+                <p className="text-slate-300 text-center text-sm">Acompanhe a transmissão oficial da NASA para a missão Artemis II, rumo à Lua! 🌕🚀</p>
+                <div className="w-full aspect-video rounded-xl overflow-hidden border border-slate-700 shadow-lg">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/m3kR2KK8TEs?autoplay=1" 
+                        title="NASA Live Stream" 
+                        frameBorder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowFullScreen
+                    ></iframe>
+                </div>
+            </div>
+        );
       case 'instagram':
         return (
           <div className="text-center">
@@ -700,10 +717,10 @@ const App: React.FC = () => {
         <Stars />
         {showGuide && <GuideBubble onClose={handleCloseGuide} />}
         <audio ref={audioRef} src={RADIO_STREAM_URL} preload="none" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}></audio>
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
-            <main className="w-full max-w-lg mx-auto bg-slate-900/60 backdrop-blur-xl border border-purple-500/20 rounded-3xl shadow-2xl shadow-purple-900/40 p-6 sm:p-8 text-center flex flex-col items-center">
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-2 sm:p-4">
+            <main className="w-full max-w-lg mx-auto bg-slate-900/60 backdrop-blur-xl border border-purple-500/20 rounded-3xl shadow-2xl shadow-purple-900/40 p-4 sm:p-6 text-center flex flex-col items-center">
                 <div 
-                    className="w-32 h-32 sm:w-36 sm:h-36 mb-4 cursor-pointer"
+                    className="w-24 h-24 sm:w-28 sm:h-28 mb-1 cursor-pointer"
                     onClick={handleLogoClick}
                     style={{ 
                         transform: `rotateY(${rotation}deg)`,
@@ -714,27 +731,27 @@ const App: React.FC = () => {
                 </div>
                 
                 <h1 
-                  className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text animated-gradient text-gradient cursor-pointer"
+                  className="text-xl sm:text-2xl font-extrabold text-transparent bg-clip-text animated-gradient text-gradient cursor-pointer"
                   onClick={() => openModal('about')}
                 >
                   Labirinto Acústico
                 </h1>
                 
-                <div className="mt-4 min-h-[3.5rem] flex items-center justify-center px-2">
-                  <p className="text-slate-300 text-sm sm:text-base transition-opacity duration-500">
+                <div className="mt-1 min-h-[2.5rem] flex items-center justify-center px-2">
+                  <p className="text-slate-300 text-xs sm:text-sm transition-opacity duration-500">
                     {SUBTITLES[subtitleIndex]}
                   </p>
                 </div>
-                <p className="mt-2 text-base sm:text-lg font-semibold text-green-400">
+                <p className="mt-0.5 text-xs sm:text-sm font-semibold text-green-400">
                   ⏰ Segunda à Quinta às 22:00
                 </p>
                 {isLive && (
-                    <p className="mt-2 text-lg font-bold text-green-400 animate-pulse">
+                    <p className="mt-1 text-base font-bold text-green-400 animate-pulse">
                         ESTAMOS AO VIVO AGORA
                     </p>
                 )}
 
-                <div className="w-full max-w-sm bg-slate-800/40 border border-purple-500/20 rounded-xl p-3 sm:p-4 mt-2 flex items-center justify-between shadow-lg relative">
+                <div className="w-full max-w-sm bg-slate-800/40 border border-purple-500/20 rounded-xl p-2 sm:p-3 mt-2 flex items-center justify-between shadow-lg relative">
                     <div className="text-left">
                         <h3 className="font-bold text-sm sm:text-base text-white">Rádio Clube 94.1 FM</h3>
                         <p className="text-xs text-slate-400">Clique para ouvir</p>
@@ -775,8 +792,16 @@ const App: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="w-full max-w-sm space-y-3 mt-4">
-                  <div className="flex gap-3 w-full">
+                {/* Botão Temporário Artemis 2 */}
+                <button 
+                    onClick={() => openModal('artemis2')} 
+                    className="w-full max-w-sm mt-3 bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold py-2 px-3 text-sm rounded-lg flex items-center justify-center gap-2 border border-blue-400/50 shadow-[0_0_15px_rgba(37,99,235,0.5)] animate-pulse"
+                >
+                    🚀 Assista ao Lançamento da Artemis II (NASA)
+                </button>
+
+                <div className="w-full max-w-sm space-y-2 mt-3">
+                  <div className="flex gap-2 w-full">
                       <LinkButton 
                           icon={<InstagramIcon />} 
                           text="Instagram" 
@@ -790,7 +815,7 @@ const App: React.FC = () => {
                           className="flex-1"
                       />
                   </div>
-                  <div className="flex gap-3 w-full">
+                  <div className="flex gap-2 w-full">
                       <LinkAnchor 
                           icon={<YoutubeIcon />} 
                           text="Youtube" 
@@ -808,7 +833,7 @@ const App: React.FC = () => {
                   <LinkButton icon={<GamesIcon />} text="Joguinhos" onClick={() => openModal('games')} />
                   <LinkButton icon={<ShoppingCartIcon />} text="Loja Intergaláctica" onClick={() => openModal('shop')} />
                   
-                  <div className="flex justify-around items-center pt-2 gap-4">
+                  <div className="flex justify-around items-center pt-1 gap-3">
                       <div className="group relative">
                           <LinkButton
                               icon={<InfoIcon />}
@@ -933,13 +958,13 @@ const App: React.FC = () => {
             position: relative;
             width: 100%;
             text-align: center;
-            padding: 0.6rem 1rem;
+            padding: 0.4rem 0.8rem;
             border: 1px solid rgba(255, 255, 255, 0.15);
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 0.75rem;
+            border-radius: 0.5rem;
             transition: all 0.2s ease-in-out;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         .link-button-style:hover {
             transform: translateY(-2px) scale(1.02);
@@ -963,8 +988,8 @@ const App: React.FC = () => {
             /* The margin-right hack is no longer needed */
         }
         .icon-only-button {
-            width: 3rem; 
-            height: 3rem; 
+            width: 2.5rem; 
+            height: 2.5rem; 
             padding: 0;
             justify-content: center;
             border-radius: 9999px;
@@ -1249,6 +1274,7 @@ const MODAL_TITLES = {
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento',
     shop: 'Loja Intergaláctica 🛍️',
+    artemis2: 'Missão Artemis II 🚀',
     construction: 'Em Construção'
 };
 

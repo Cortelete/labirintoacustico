@@ -36,6 +36,7 @@ import PlayIcon from './components/icons/PlayIcon';
 import PauseIcon from './components/icons/PauseIcon';
 import LiveIcon from './components/icons/LiveIcon';
 import MusicNoteIcon from './components/icons/MusicNoteIcon';
+import RocketIcon from './components/icons/RocketIcon';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
 import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
 import GamesIcon from './components/icons/GamesIcon';
@@ -782,6 +783,22 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="w-full max-w-sm space-y-2 mt-3">
+                  <a 
+                      href="https://www.youtube.com/watch?v=m3kR2KK8TEs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-artemis w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
+                  >
+                      <div className="btn-artemis-particles">
+                          <span style={{ left: '15%', animationDelay: '0.1s' }}>🚀</span>
+                          <span style={{ left: '50%', animationDelay: '1.2s' }}>🌕</span>
+                          <span style={{ left: '80%', animationDelay: '0.7s' }}>👨‍🚀</span>
+                      </div>
+                      <span className="relative z-10 text-orange-300 drop-shadow-[0_0_5px_rgba(253,186,116,0.8)] flex items-center gap-2">
+                          <RocketIcon className="w-5 h-5" /> Missão Artemis III (Ao Vivo)
+                      </span>
+                  </a>
+
                   <button 
                       onClick={() => openModal('requestSong')} 
                       className="btn-music w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
@@ -1261,6 +1278,43 @@ const App: React.FC = () => {
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(-100px) rotate(-45deg) scale(1.2); opacity: 0; }
+        }
+
+        /* Artemis Button Styles */
+        .btn-artemis {
+            position: relative;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            border: 2px solid #fb923c; /* orange-400 */
+            box-shadow: 0 0 15px rgba(251, 146, 60, 0.5), inset 0 0 10px rgba(251, 146, 60, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+        }
+        .btn-artemis:hover {
+            box-shadow: 0 0 25px rgba(251, 146, 60, 0.8), inset 0 0 15px rgba(251, 146, 60, 0.4);
+            background: rgba(15, 23, 42, 0.6);
+            transform: scale(1.02);
+        }
+        .btn-artemis-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        .btn-artemis-particles span {
+            position: absolute;
+            bottom: -30px;
+            font-size: 1.5rem;
+            animation: float-up-artemis 3s ease-in-out infinite;
+        }
+        @keyframes float-up-artemis {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-80px) scale(1.2); opacity: 0; }
         }
 
         /* Music Button Styles */

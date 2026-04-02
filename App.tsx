@@ -332,6 +332,25 @@ const App: React.FC = () => {
 
   const renderModalContent = () => {
     switch (activeModal) {
+      case 'artemis':
+        return (
+          <div className="flex flex-col items-center justify-center w-full space-y-4">
+            <div className="w-full aspect-video rounded-lg overflow-hidden border border-orange-500/30 shadow-[0_0_15px_rgba(251,146,60,0.2)]">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/m3kR2KK8TEs?autoplay=1" 
+                title="Missão Artemis III (Ao Vivo)" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowFullScreen
+              ></iframe>
+            </div>
+            <p className="text-slate-300 text-sm text-center">
+              Acompanhe ao vivo a transmissão oficial da NASA sobre a Missão Artemis III, o retorno da humanidade à Lua! 🚀🌕
+            </p>
+          </div>
+        );
       case 'about':
         return (
           <div className="text-center space-y-3">
@@ -783,10 +802,8 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="w-full max-w-sm space-y-2 mt-3">
-                  <a 
-                      href="https://www.youtube.com/watch?v=m3kR2KK8TEs"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <button 
+                      onClick={() => openModal('artemis')}
                       className="btn-artemis w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
                   >
                       <div className="btn-artemis-particles">
@@ -797,7 +814,7 @@ const App: React.FC = () => {
                       <span className="relative z-10 text-orange-300 drop-shadow-[0_0_5px_rgba(253,186,116,0.8)] flex items-center gap-2">
                           <RocketIcon className="w-5 h-5" /> Missão Artemis III (Ao Vivo)
                       </span>
-                  </a>
+                  </button>
 
                   <button 
                       onClick={() => openModal('requestSong')} 
@@ -1468,6 +1485,7 @@ const LinkAnchor: React.FC<{icon: React.ReactNode, text: string, href: string, c
 );
 
 const MODAL_TITLES = {
+    artemis: 'Missão Artemis III (Ao Vivo)',
     about: 'Quem somos nós?',
     contact: 'Fale Conosco',
     contactOptions: 'Entre em Contato',

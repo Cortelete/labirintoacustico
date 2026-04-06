@@ -340,14 +340,14 @@ const App: React.FC = () => {
                 width="100%" 
                 height="100%" 
                 src="https://www.youtube.com/embed/m3kR2KK8TEs?autoplay=1" 
-                title="Missão Artemis III (Ao Vivo)" 
+                title="Missão Artemis II (Ao Vivo)" 
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 allowFullScreen
               ></iframe>
             </div>
             <p className="text-slate-300 text-sm text-center">
-              Acompanhe ao vivo a transmissão oficial da NASA sobre a Missão Artemis III, o retorno da humanidade à Lua! 🚀🌕
+              Acompanhe ao vivo a transmissão oficial da NASA sobre a Missão Artemis II, o retorno da humanidade à Lua! 🚀🌕
             </p>
           </div>
         );
@@ -812,7 +812,7 @@ const App: React.FC = () => {
                           <span style={{ left: '80%', animationDelay: '0.7s' }}>👨‍🚀</span>
                       </div>
                       <span className="relative z-10 text-orange-300 drop-shadow-[0_0_5px_rgba(253,186,116,0.8)] flex items-center gap-2">
-                          <RocketIcon className="w-5 h-5" /> Missão Artemis III (Ao Vivo)
+                          <RocketIcon className="w-5 h-5" /> Missão Artemis II (Ao Vivo)
                       </span>
                   </button>
 
@@ -1485,7 +1485,7 @@ const LinkAnchor: React.FC<{icon: React.ReactNode, text: string, href: string, c
 );
 
 const MODAL_TITLES = {
-    artemis: 'Missão Artemis III (Ao Vivo)',
+    artemis: 'Missão Artemis II (Ao Vivo)',
     about: 'Quem somos nós?',
     contact: 'Fale Conosco',
     contactOptions: 'Entre em Contato',

@@ -36,7 +36,6 @@ import PlayIcon from './components/icons/PlayIcon';
 import PauseIcon from './components/icons/PauseIcon';
 import LiveIcon from './components/icons/LiveIcon';
 import MusicNoteIcon from './components/icons/MusicNoteIcon';
-import RocketIcon from './components/icons/RocketIcon';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
 import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
 import GamesIcon from './components/icons/GamesIcon';
@@ -332,25 +331,6 @@ const App: React.FC = () => {
 
   const renderModalContent = () => {
     switch (activeModal) {
-      case 'artemis':
-        return (
-          <div className="flex flex-col items-center justify-center w-full space-y-4">
-            <div className="w-full aspect-video rounded-lg overflow-hidden border border-orange-500/30 shadow-[0_0_15px_rgba(251,146,60,0.2)]">
-              <iframe 
-                width="100%" 
-                height="100%" 
-                src="https://www.youtube.com/embed/m3kR2KK8TEs?autoplay=1" 
-                title="Missão Artemis II (Ao Vivo)" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowFullScreen
-              ></iframe>
-            </div>
-            <p className="text-slate-300 text-sm text-center">
-              Acompanhe ao vivo a transmissão oficial da NASA sobre a Missão Artemis II, o retorno da humanidade à Lua! 🚀🌕
-            </p>
-          </div>
-        );
       case 'about':
         return (
           <div className="text-center space-y-3">
@@ -803,20 +783,6 @@ const App: React.FC = () => {
 
                 <div className="w-full max-w-sm space-y-2 mt-3">
                   <button 
-                      onClick={() => openModal('artemis')}
-                      className="btn-artemis w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
-                  >
-                      <div className="btn-artemis-particles">
-                          <span style={{ left: '15%', animationDelay: '0.1s' }}>🚀</span>
-                          <span style={{ left: '50%', animationDelay: '1.2s' }}>🌕</span>
-                          <span style={{ left: '80%', animationDelay: '0.7s' }}>👨‍🚀</span>
-                      </div>
-                      <span className="relative z-10 text-orange-300 drop-shadow-[0_0_5px_rgba(253,186,116,0.8)] flex items-center gap-2">
-                          <RocketIcon className="w-5 h-5" /> Missão Artemis II (Ao Vivo)
-                      </span>
-                  </button>
-
-                  <button 
                       onClick={() => openModal('requestSong')} 
                       className="btn-music w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
                   >
@@ -825,7 +791,7 @@ const App: React.FC = () => {
                           <span style={{ left: '50%', animationDelay: '1.5s' }}>🎸</span>
                           <span style={{ left: '80%', animationDelay: '0.8s' }}>🎧</span>
                       </div>
-                      <span className="relative z-10 text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] flex items-center gap-2">
+                      <span className="relative z-10 text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] flex items-center gap-2">
                           <MusicNoteIcon className="w-5 h-5" /> Pedir Música
                       </span>
                   </button>
@@ -839,7 +805,7 @@ const App: React.FC = () => {
                           <span style={{ left: '45%', animationDelay: '1.8s' }}>🛸</span>
                           <span style={{ left: '75%', animationDelay: '0.5s' }}>🎮</span>
                       </div>
-                      <span className="relative z-10 text-green-300 drop-shadow-[0_0_5px_rgba(74,222,128,0.8)] flex items-center gap-2">
+                      <span className="relative z-10 text-green-300 drop-shadow-[0_0_5px_rgba(74,222,128,0.5)] flex items-center gap-2">
                           <GamesIcon className="w-5 h-5" /> Joguinhos
                       </span>
                   </button>
@@ -853,7 +819,7 @@ const App: React.FC = () => {
                           <span style={{ left: '50%', animationDelay: '1.2s' }}>💎</span>
                           <span style={{ left: '80%', animationDelay: '0.8s' }}>✨</span>
                       </div>
-                      <span className="relative z-10 text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.8)] flex items-center gap-2">
+                      <span className="relative z-10 text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.5)] flex items-center gap-2">
                           <ShoppingCartIcon className="w-5 h-5" /> Loja Intergaláctica
                       </span>
                   </button>
@@ -1024,23 +990,23 @@ const App: React.FC = () => {
             transform: translateY(-2px) scale(1.02);
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(168, 85, 247, 0.5); /* purple-500 */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         .btn-social {
-            background: linear-gradient(45deg, rgba(255,255,255,0.02), rgba(168,85,247,0.1), rgba(255,255,255,0.02));
+            background: linear-gradient(45deg, rgba(255,255,255,0.01), rgba(168,85,247,0.05), rgba(255,255,255,0.01));
             background-size: 200% 200%;
-            animation: social-bg-shift 3s ease infinite alternate;
+            animation: social-bg-shift 4s ease infinite alternate;
         }
         @keyframes social-bg-shift {
             0% { 
                 background-position: 0% 50%; 
-                border-color: rgba(168, 85, 247, 0.2);
-                box-shadow: 0 0 5px rgba(168, 85, 247, 0.1);
+                border-color: rgba(168, 85, 247, 0.15);
+                box-shadow: 0 0 3px rgba(168, 85, 247, 0.05);
             }
             100% { 
                 background-position: 100% 50%; 
-                border-color: rgba(236, 72, 153, 0.4);
-                box-shadow: 0 0 12px rgba(236, 72, 153, 0.2);
+                border-color: rgba(236, 72, 153, 0.2);
+                box-shadow: 0 0 8px rgba(236, 72, 153, 0.1);
             }
         }
         .link-button-style > svg {
@@ -1074,8 +1040,8 @@ const App: React.FC = () => {
         .icon-only-button:hover {
             transform: scale(1.15) translateY(-4px) !important;
             background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(34, 211, 238, 0.6);
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
             animation-play-state: paused;
         }
         @keyframes icon-float {
@@ -1268,12 +1234,12 @@ const App: React.FC = () => {
             background: rgba(15, 23, 42, 0.4); /* fundo meio transparente */
             backdrop-filter: blur(4px);
             border: 2px solid #a3e635; /* verde limão neon */
-            box-shadow: 0 0 15px rgba(163, 230, 53, 0.5), inset 0 0 10px rgba(163, 230, 53, 0.2);
+            box-shadow: 0 0 10px rgba(163, 230, 53, 0.3), inset 0 0 5px rgba(163, 230, 53, 0.1);
             color: white;
             transition: all 0.3s ease;
         }
         .btn-cosmic:hover {
-            box-shadow: 0 0 25px rgba(163, 230, 53, 0.8), inset 0 0 15px rgba(163, 230, 53, 0.4);
+            box-shadow: 0 0 15px rgba(163, 230, 53, 0.5), inset 0 0 8px rgba(163, 230, 53, 0.2);
             background: rgba(15, 23, 42, 0.6);
             transform: scale(1.02);
         }
@@ -1297,43 +1263,6 @@ const App: React.FC = () => {
             100% { transform: translateY(-100px) rotate(-45deg) scale(1.2); opacity: 0; }
         }
 
-        /* Artemis Button Styles */
-        .btn-artemis {
-            position: relative;
-            overflow: hidden;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            border: 2px solid #fb923c; /* orange-400 */
-            box-shadow: 0 0 15px rgba(251, 146, 60, 0.5), inset 0 0 10px rgba(251, 146, 60, 0.2);
-            color: white;
-            transition: all 0.3s ease;
-            display: flex;
-        }
-        .btn-artemis:hover {
-            box-shadow: 0 0 25px rgba(251, 146, 60, 0.8), inset 0 0 15px rgba(251, 146, 60, 0.4);
-            background: rgba(15, 23, 42, 0.6);
-            transform: scale(1.02);
-        }
-        .btn-artemis-particles {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.5;
-        }
-        .btn-artemis-particles span {
-            position: absolute;
-            bottom: -30px;
-            font-size: 1.5rem;
-            animation: float-up-artemis 3s ease-in-out infinite;
-        }
-        @keyframes float-up-artemis {
-            0% { transform: translateY(0) scale(0.8); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translateY(-80px) scale(1.2); opacity: 0; }
-        }
-
         /* Music Button Styles */
         .btn-music {
             position: relative;
@@ -1341,12 +1270,12 @@ const App: React.FC = () => {
             background: rgba(15, 23, 42, 0.4);
             backdrop-filter: blur(4px);
             border: 2px solid #22d3ee; /* cyan-400 */
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5), inset 0 0 10px rgba(34, 211, 238, 0.2);
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.3), inset 0 0 5px rgba(34, 211, 238, 0.1);
             color: white;
             transition: all 0.3s ease;
         }
         .btn-music:hover {
-            box-shadow: 0 0 25px rgba(34, 211, 238, 0.8), inset 0 0 15px rgba(34, 211, 238, 0.4);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5), inset 0 0 8px rgba(34, 211, 238, 0.2);
             background: rgba(15, 23, 42, 0.6);
             transform: scale(1.02);
         }
@@ -1377,12 +1306,12 @@ const App: React.FC = () => {
             background: rgba(15, 23, 42, 0.4);
             backdrop-filter: blur(4px);
             border: 2px solid #fde047; /* yellow-300 */
-            box-shadow: 0 0 15px rgba(253, 224, 71, 0.5), inset 0 0 10px rgba(253, 224, 71, 0.2);
+            box-shadow: 0 0 10px rgba(253, 224, 71, 0.3), inset 0 0 5px rgba(253, 224, 71, 0.1);
             color: white;
             transition: all 0.3s ease;
         }
         .btn-shop:hover {
-            box-shadow: 0 0 25px rgba(253, 224, 71, 0.8), inset 0 0 15px rgba(253, 224, 71, 0.4);
+            box-shadow: 0 0 15px rgba(253, 224, 71, 0.5), inset 0 0 8px rgba(253, 224, 71, 0.2);
             background: rgba(15, 23, 42, 0.6);
             transform: scale(1.02);
         }
@@ -1485,7 +1414,6 @@ const LinkAnchor: React.FC<{icon: React.ReactNode, text: string, href: string, c
 );
 
 const MODAL_TITLES = {
-    artemis: 'Missão Artemis II (Ao Vivo)',
     about: 'Quem somos nós?',
     contact: 'Fale Conosco',
     contactOptions: 'Entre em Contato',

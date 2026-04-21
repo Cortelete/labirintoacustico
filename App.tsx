@@ -786,11 +786,6 @@ const App: React.FC = () => {
                       onClick={() => openModal('requestSong')} 
                       className="btn-music w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
                   >
-                      <div className="btn-music-particles">
-                          <span style={{ left: '15%', animationDelay: '0.3s' }}>🎵</span>
-                          <span style={{ left: '50%', animationDelay: '1.5s' }}>🎸</span>
-                          <span style={{ left: '80%', animationDelay: '0.8s' }}>🎧</span>
-                      </div>
                       <span className="relative z-10 text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] flex items-center gap-2">
                           <MusicNoteIcon className="w-5 h-5" /> Pedir Música
                       </span>
@@ -800,11 +795,6 @@ const App: React.FC = () => {
                       onClick={() => openModal('games')} 
                       className="btn-cosmic w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
                   >
-                      <div className="btn-cosmic-particles">
-                          <span style={{ left: '10%', animationDelay: '0.2s' }}>👾</span>
-                          <span style={{ left: '45%', animationDelay: '1.8s' }}>🛸</span>
-                          <span style={{ left: '75%', animationDelay: '0.5s' }}>🎮</span>
-                      </div>
                       <span className="relative z-10 text-green-300 drop-shadow-[0_0_5px_rgba(74,222,128,0.5)] flex items-center gap-2">
                           <GamesIcon className="w-5 h-5" /> Joguinhos
                       </span>
@@ -814,11 +804,6 @@ const App: React.FC = () => {
                       onClick={() => openModal('shop')} 
                       className="btn-shop w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
                   >
-                      <div className="btn-shop-particles">
-                          <span style={{ left: '15%', animationDelay: '0.1s' }}>🛍️</span>
-                          <span style={{ left: '50%', animationDelay: '1.2s' }}>💎</span>
-                          <span style={{ left: '80%', animationDelay: '0.8s' }}>✨</span>
-                      </div>
                       <span className="relative z-10 text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.5)] flex items-center gap-2">
                           <ShoppingCartIcon className="w-5 h-5" /> Loja Intergaláctica
                       </span>
@@ -909,6 +894,17 @@ const App: React.FC = () => {
         </Modal>
       </div>
       <style>{`
+        /* Hide scrollbars completely but keep functionality */
+        ::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        * {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
         .star {
             position: absolute;
             background: white;
@@ -1243,25 +1239,6 @@ const App: React.FC = () => {
             background: rgba(15, 23, 42, 0.6);
             transform: scale(1.02);
         }
-        .btn-cosmic-particles {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.4;
-        }
-        .btn-cosmic-particles span {
-            position: absolute;
-            bottom: -30px;
-            font-size: 1.5rem;
-            animation: fly-up 3s linear infinite;
-        }
-        @keyframes fly-up {
-            0% { transform: translateY(0) rotate(-45deg) scale(0.8); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(-45deg) scale(1.2); opacity: 0; }
-        }
 
         /* Music Button Styles */
         .btn-music {
@@ -1279,25 +1256,6 @@ const App: React.FC = () => {
             background: rgba(15, 23, 42, 0.6);
             transform: scale(1.02);
         }
-        .btn-music-particles {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.5;
-        }
-        .btn-music-particles span {
-            position: absolute;
-            bottom: -30px;
-            font-size: 1.5rem;
-            animation: float-up-music 3s ease-in-out infinite;
-        }
-        @keyframes float-up-music {
-            0% { transform: translateY(0) scale(0.8) rotate(-10deg); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translateY(-80px) scale(1.2) rotate(10deg); opacity: 0; }
-        }
 
         /* Shop Button Styles */
         .btn-shop {
@@ -1314,25 +1272,6 @@ const App: React.FC = () => {
             box-shadow: 0 0 15px rgba(253, 224, 71, 0.5), inset 0 0 8px rgba(253, 224, 71, 0.2);
             background: rgba(15, 23, 42, 0.6);
             transform: scale(1.02);
-        }
-        .btn-shop-particles {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.5;
-        }
-        .btn-shop-particles span {
-            position: absolute;
-            bottom: -30px;
-            font-size: 1.5rem;
-            animation: float-up 3s ease-in-out infinite;
-        }
-        @keyframes float-up {
-            0% { transform: translateY(0) scale(0.8); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translateY(-80px) scale(1.2); opacity: 0; }
         }
 
         /* Responsiveness */

@@ -262,7 +262,7 @@ const App: React.FC = () => {
   
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Olá! Meu nome é ${contactName}, tenho ${contactAge} anos.\nObservações: ${contactObs || 'Nenhuma'}`;
+    const message = `Olá, vim do site e quero falar com o pessoal do Labirinto Acústico. Meu nome é ${contactName}, tenho ${contactAge} anos.\nObservações: ${contactObs || 'Nenhuma'}`;
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     closeModal();

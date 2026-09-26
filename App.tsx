@@ -15,7 +15,6 @@ import {
   RADIO_STREAM_URL, 
   DEVELOPER_WHATSAPP_NUMBER, 
   DEVELOPER_INSTAGRAM_URL,
-  SHOP_URL,
   ADVERTISE_URL
 } from './constants';
 import { ModalType } from './types';
@@ -37,7 +36,6 @@ import PauseIcon from './components/icons/PauseIcon';
 import LiveIcon from './components/icons/LiveIcon';
 import MusicNoteIcon from './components/icons/MusicNoteIcon';
 import MegaphoneIcon from './components/icons/MegaphoneIcon';
-import ShoppingCartIcon from './components/icons/ShoppingCartIcon';
 import GamesIcon from './components/icons/GamesIcon';
 import BombIcon from './components/icons/BombIcon';
 import GuitarIcon from './components/icons/GuitarIcon';
@@ -47,7 +45,6 @@ import CosmicSnakeGame from './components/games/CosmicSnakeGame';
 import BomberAlienGame from './components/games/BomberAlien';
 import RockInvadersGame from './components/games/RockInvadersGame';
 import CosmicRiffGame from './components/games/CosmicRiffGame';
-import IntergalacticStore from './components/shop/IntergalacticStore';
 
 
 const App: React.FC = () => {
@@ -83,11 +80,19 @@ const App: React.FC = () => {
   // Dev Contact Form State
   const [devContactName, setDevContactName] = useState('');
 
-  // Game State
-  const [snakePlayerName, setSnakePlayerName] = useState('');
-  const [bomberAlienPlayerName, setBomberAlienPlayerName] = useState('');
-  const [rockInvadersPlayerName, setRockInvadersPlayerName] = useState('');
-  const [cosmicRiffPlayerName, setCosmicRiffPlayerName] = useState('');
+  // Game State with persistence
+  const [snakePlayerName, setSnakePlayerName] = useState(() => {
+    try { return localStorage.getItem('labirinto_player_name') || ''; } catch { return ''; }
+  });
+  const [bomberAlienPlayerName, setBomberAlienPlayerName] = useState(() => {
+    try { return localStorage.getItem('labirinto_player_name') || ''; } catch { return ''; }
+  });
+  const [rockInvadersPlayerName, setRockInvadersPlayerName] = useState(() => {
+    try { return localStorage.getItem('labirinto_player_name') || ''; } catch { return ''; }
+  });
+  const [cosmicRiffPlayerName, setCosmicRiffPlayerName] = useState(() => {
+    try { return localStorage.getItem('labirinto_player_name') || ''; } catch { return ''; }
+  });
 
 
   // Subtitle cycling effect
@@ -430,48 +435,116 @@ const App: React.FC = () => {
         );
       case 'games':
         return (
-          <div className="relative text-center space-y-4 overflow-hidden p-4 min-h-[250px]">
-              <span className="cosmic-item text-4xl" style={{ top: '10%', left: '15%', animationDuration: '15s' }}>👽</span>
-              <span className="cosmic-item text-2xl" style={{ top: '70%', left: '80%', animationDuration: '20s', animationDelay: '3s' }}>✨</span>
-              <span className="cosmic-item text-3xl" style={{ top: '80%', left: '20%', animationDuration: '18s', animationDelay: '1s' }}>🚀</span>
-              <span className="cosmic-item text-4xl" style={{ top: '25%', left: '75%', animationDuration: '22s', animationDelay: '5s' }}>🪐</span>
+          <div className="space-y-4 text-center">
+            <div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 text-transparent bg-clip-text">
+                Fliperama Cósmico 🕹️
+              </h3>
+              <p className="text-xs text-slate-300 mt-1">
+                4 jogos arcade retrô com áudio sintetizado e gráficos intergalácticos!
+              </p>
+            </div>
 
-              <div className="relative z-10 bg-slate-900/60 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 space-y-4">
-                  <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 text-transparent bg-clip-text text-gradient animated-gradient">
-                      Joguinhos Cósmicos
-                  </h3>
-                  <p className="text-slate-300">Prepare-se para uma aventura intergaláctica!</p>
-                  <button
-                      onClick={() => openModal('requestPlayerName')}
-                      className="w-full bg-purple-600 hover:bg-purple-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
-                  >
-                      🚀 Jogar Cosmic Snake
-                  </button>
-                   <button
-                        onClick={() => openModal('requestBomberAlienPlayerName')}
-                        className="w-full bg-orange-600 hover:bg-orange-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
-                    >
-                        <BombIcon className="w-5 h-5" /> Jogar Bomber Alien
-                    </button>
-                    <button
-                        onClick={() => openModal('requestRockInvadersPlayerName')}
-                        className="w-full bg-pink-600 hover:bg-pink-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
-                    >
-                        <GuitarIcon className="w-5 h-5" /> Jogar Rock Invaders
-                    </button>
-                    <button
-                        onClick={() => openModal('requestCosmicRiffPlayerName')}
-                        className="w-full bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2"
-                    >
-                        <RhythmIcon className="w-5 h-5" /> Jogar Cosmic Riff
-                    </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+              {/* Cosmic Snake */}
+              <div className="p-3.5 rounded-xl bg-slate-800/80 border border-purple-500/30 hover:border-purple-400/60 transition-all flex flex-col justify-between space-y-2 group">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm text-purple-300 flex items-center gap-1.5">
+                      🐍 Cosmic Snake
+                    </span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-900/60 text-purple-300 font-mono">
+                      Arcade
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Colete orbes estelares, ative supernovas e navegue por 5 setores cósmicos.
+                  </p>
+                </div>
+                <button
+                  onClick={() => openModal(snakePlayerName ? 'cosmicSnakeGame' : 'requestPlayerName')}
+                  className="w-full py-2 px-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition-colors shadow flex items-center justify-center gap-1"
+                >
+                  🚀 Jogar
+                </button>
               </div>
+
+              {/* Bomber Alien */}
+              <div className="p-3.5 rounded-xl bg-slate-800/80 border border-orange-500/30 hover:border-orange-400/60 transition-all flex flex-col justify-between space-y-2 group">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm text-orange-300 flex items-center gap-1.5">
+                      <BombIcon className="w-4 h-4 text-orange-400" /> Bomber Alien
+                    </span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-900/60 text-orange-300 font-mono">
+                      Tático
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Plante bombas de plasma, colete power-ups e derrote o drone alienígena na arena.
+                  </p>
+                </div>
+                <button
+                  onClick={() => openModal(bomberAlienPlayerName ? 'bomberAlienGame' : 'requestBomberAlienPlayerName')}
+                  className="w-full py-2 px-3 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-bold transition-colors shadow flex items-center justify-center gap-1"
+                >
+                  💣 Jogar
+                </button>
+              </div>
+
+              {/* Rock Invaders */}
+              <div className="p-3.5 rounded-xl bg-slate-800/80 border border-pink-500/30 hover:border-pink-400/60 transition-all flex flex-col justify-between space-y-2 group">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm text-pink-300 flex items-center gap-1.5">
+                      <GuitarIcon className="w-4 h-4 text-pink-400" /> Rock Invaders
+                    </span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-pink-900/60 text-pink-300 font-mono">
+                      Shooter
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Defenda o palco cósmico contra invasores sonoros disparando lasers e riffs com a Flying-V.
+                  </p>
+                </div>
+                <button
+                  onClick={() => openModal(rockInvadersPlayerName ? 'rockInvadersGame' : 'requestRockInvadersPlayerName')}
+                  className="w-full py-2 px-3 bg-pink-600 hover:bg-pink-500 text-white rounded-lg text-xs font-bold transition-colors shadow flex items-center justify-center gap-1"
+                >
+                  ⚡ Jogar
+                </button>
+              </div>
+
+              {/* Cosmic Riff */}
+              <div className="p-3.5 rounded-xl bg-slate-800/80 border border-blue-500/30 hover:border-blue-400/60 transition-all flex flex-col justify-between space-y-2 group">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm text-blue-300 flex items-center gap-1.5">
+                      <RhythmIcon className="w-4 h-4 text-blue-400" /> Cosmic Riff
+                    </span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-900/60 text-blue-300 font-mono">
+                      Ritmo
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Toque guitarras elétricas sintetizadas nas 4 pistas e ative o Star Power Overdrive!
+                  </p>
+                </div>
+                <button
+                  onClick={() => openModal(cosmicRiffPlayerName ? 'cosmicRiffGame' : 'requestCosmicRiffPlayerName')}
+                  className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors shadow flex items-center justify-center gap-1"
+                >
+                  🎸 Jogar
+                </button>
+              </div>
+            </div>
           </div>
         );
       case 'requestPlayerName':
         return (
             <form onSubmit={(e) => {
                 e.preventDefault();
+                try { localStorage.setItem('labirinto_player_name', snakePlayerName); } catch {}
                 openModal('cosmicSnakeGame');
             }} className="space-y-4 text-center">
                 <p className="text-slate-300">Para começar, nos diga o seu nome de piloto espacial:</p>
@@ -483,8 +556,8 @@ const App: React.FC = () => {
                     required 
                     className="input-field" 
                 />
-                <button type="submit" className="w-full bg-green-500 hover:bg-green-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
-                    Iniciar Jogo
+                <button type="submit" className="w-full bg-purple-600 hover:bg-purple-500 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                    Iniciar Cosmic Snake
                 </button>
             </form>
         );
@@ -496,6 +569,7 @@ const App: React.FC = () => {
         return (
             <form onSubmit={(e) => {
                 e.preventDefault();
+                try { localStorage.setItem('labirinto_player_name', bomberAlienPlayerName); } catch {}
                 openModal('bomberAlienGame');
             }} className="space-y-4 text-center">
                 <p className="text-slate-300">Insira seu nome de especialista em demolição:</p>
@@ -507,8 +581,8 @@ const App: React.FC = () => {
                     required
                     className="input-field"
                 />
-                <button type="submit" className="w-full bg-purple-500 hover:bg-purple-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
-                    Iniciar Jogo
+                <button type="submit" className="w-full bg-orange-600 hover:bg-orange-500 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                    Iniciar Bomber Alien
                 </button>
             </form>
         );
@@ -523,6 +597,7 @@ const App: React.FC = () => {
         return (
             <form onSubmit={(e) => {
                 e.preventDefault();
+                try { localStorage.setItem('labirinto_player_name', rockInvadersPlayerName); } catch {}
                 openModal('rockInvadersGame');
             }} className="space-y-4 text-center">
                 <p className="text-slate-300">Assine o contrato com seu nome de Rockstar para entrar no palco cósmico:</p>
@@ -534,7 +609,7 @@ const App: React.FC = () => {
                     required
                     className="input-field"
                 />
-                <button type="submit" className="w-full bg-pink-500 hover:bg-pink-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                <button type="submit" className="w-full bg-pink-600 hover:bg-pink-500 transition-colors text-white font-bold py-3 px-4 rounded-lg">
                     Entrar no Palco
                 </button>
             </form>
@@ -550,6 +625,7 @@ const App: React.FC = () => {
         return (
             <form onSubmit={(e) => {
                 e.preventDefault();
+                try { localStorage.setItem('labirinto_player_name', cosmicRiffPlayerName); } catch {}
                 openModal('cosmicRiffGame');
             }} className="space-y-4 text-center">
                 <p className="text-slate-300">Qual será seu nome artístico no palco?</p>
@@ -561,7 +637,7 @@ const App: React.FC = () => {
                     required
                     className="input-field"
                 />
-                <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 transition-colors text-white font-bold py-3 px-4 rounded-lg">
+                <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 transition-colors text-white font-bold py-3 px-4 rounded-lg">
                     Começar o Show
                 </button>
             </form>
@@ -685,10 +761,6 @@ const App: React.FC = () => {
                 </button>
             </form>
         );
-    case 'shop':
-        return (
-            <IntergalacticStore onClose={closeModal} />
-        );
       default: return null;
     }
   };
@@ -800,15 +872,6 @@ const App: React.FC = () => {
                       </span>
                   </button>
 
-                  <button 
-                      onClick={() => openModal('shop')} 
-                      className="btn-shop w-full max-w-sm py-3 px-4 text-sm sm:text-base rounded-xl flex items-center justify-center font-bold"
-                  >
-                      <span className="relative z-10 text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.5)] flex items-center gap-2">
-                          <ShoppingCartIcon className="w-5 h-5" /> Loja Intergaláctica
-                      </span>
-                  </button>
-
                   <div className="flex gap-2 w-full">
                       <LinkButton 
                           icon={<InstagramIcon />} 
@@ -889,6 +952,18 @@ const App: React.FC = () => {
             onClose={closeModal} 
             title={MODAL_TITLES[activeModal as keyof typeof MODAL_TITLES]}
             variant={activeModal === 'about' ? 'spin' : 'default'}
+            maxWidthClass={
+              activeModal === 'cosmicSnakeGame' || activeModal === 'bomberAlienGame' || activeModal === 'rockInvadersGame' || activeModal === 'cosmicRiffGame'
+                ? 'max-w-lg'
+                : activeModal === 'games'
+                ? 'max-w-xl'
+                : 'max-w-md'
+            }
+            contentClassName={
+              activeModal === 'cosmicSnakeGame' || activeModal === 'bomberAlienGame' || activeModal === 'rockInvadersGame' || activeModal === 'cosmicRiffGame'
+                ? 'p-3 md:p-5'
+                : 'p-6 md:p-8'
+            }
         >
             {renderModalContent()}
         </Modal>
@@ -1257,23 +1332,6 @@ const App: React.FC = () => {
             transform: scale(1.02);
         }
 
-        /* Shop Button Styles */
-        .btn-shop {
-            position: relative;
-            overflow: hidden;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            border: 2px solid #fde047; /* yellow-300 */
-            box-shadow: 0 0 10px rgba(253, 224, 71, 0.3), inset 0 0 5px rgba(253, 224, 71, 0.1);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .btn-shop:hover {
-            box-shadow: 0 0 15px rgba(253, 224, 71, 0.5), inset 0 0 8px rgba(253, 224, 71, 0.2);
-            background: rgba(15, 23, 42, 0.6);
-            transform: scale(1.02);
-        }
-
         /* Responsiveness */
         @media (max-width: 640px) {
             main.max-w-lg {
@@ -1307,11 +1365,29 @@ const App: React.FC = () => {
         }
         
         @keyframes fade-in {
-            from { opacity: 0; transform: translate(-50%, 10px); }
-            to { opacity: 1; transform: translate(-50%, 0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .animate-fade-in {
             animation: fade-in 0.2s ease-out forwards;
+        }
+
+        .game-overlay {
+            position: absolute !important;
+            inset: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            transform: none !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            z-index: 30 !important;
         }
 
         input[type=range]::-webkit-slider-thumb {
@@ -1373,7 +1449,6 @@ const MODAL_TITLES = {
     youtube: 'Canal no YouTube',
     developerInfo: 'Créditos',
     developerContact: 'Contato para Desenvolvimento',
-    shop: 'Loja Intergaláctica 🛍️',
     construction: 'Em Construção'
 };
 

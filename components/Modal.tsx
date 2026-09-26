@@ -8,20 +8,22 @@ interface ModalProps {
   children: React.ReactNode;
   title?: string;
   variant?: 'default' | 'spin'; // Nova propriedade para controlar a animação
+  maxWidthClass?: string;
+  contentClassName?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, variant = 'default' }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, variant = 'default', maxWidthClass = 'max-w-md', contentClassName = 'p-6 md:p-8' }) => {
   if (!isOpen) return null;
 
   const animationClass = variant === 'spin' ? 'animate-spin-entry' : 'animate-scale-in';
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center p-4 transition-opacity duration-300"
+      className="fixed inset-0 bg-black/80 z-50 flex justify-center items-center p-2 sm:p-4 transition-opacity duration-300"
       onClick={onClose}
     >
       <div
-        className={`relative bg-slate-900/80 backdrop-blur-sm border border-purple-500/30 rounded-2xl shadow-2xl shadow-purple-500/20 w-full max-w-md m-auto p-6 md:p-8 text-white transition-transform duration-300 max-h-[85vh] overflow-y-auto ${animationClass}`}
+        className={`relative bg-slate-900/95 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-2xl shadow-purple-500/20 w-full ${maxWidthClass} mx-auto my-auto ${contentClassName} text-white transition-transform duration-300 max-h-[94vh] overflow-y-auto ${animationClass}`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
